@@ -1,0 +1,10 @@
+{
+    "name": "oldboys-ladder",
+    "version": "1.0.0",
+    "description": "Oldboys Ladder page",
+    "main": "index.js",
+    "repository": "https://github.com/donjo9/oldboys-ladder",
+    "author": "donjo9 @ lvl42",
+    "license": "MIT",
+    "private": true
+}
