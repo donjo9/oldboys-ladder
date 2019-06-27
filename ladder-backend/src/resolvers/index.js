@@ -8,9 +8,7 @@ const resolvers = {
     Query,
     Mutation,
     // Subscription,
-    User,
-    Post,
-    Comment
+    User
 };
 const fragmentReplacements = extractFragmentReplacements(resolvers);
 
