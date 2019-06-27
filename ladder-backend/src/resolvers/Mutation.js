@@ -3,12 +3,13 @@ import getUserId from "../utils/getUserId";
 import generateToken from "../utils/generateToken";
 import hashPassword from "../utils/hashPassword";
 
-const JWT_SECRET = "thisisasecret";
-
 const Mutation = {
     async createUser(parent, args, { prisma }, info) {
         const password = await hashPassword(args.data.password);
 
+        if (args.data.email === "") {
+            throw new Error("Missing email");
+        }
         const user = await prisma.mutation.createUser({
             data: {
                 ...args.data,
