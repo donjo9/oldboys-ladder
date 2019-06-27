@@ -1,0 +1,66 @@
+# source: http://localhost:4000
+# timestamp: Thu Jun 27 2019 08:22:15 GMT+0200 (GMT+02:00)
+
+type AuthPayload {
+  token: String!
+  user: User!
+}
+
+input CreateUserInput {
+  name: String!
+  email: String!
+  password: String!
+}
+
+input LoginUserInput {
+  email: String!
+  password: String!
+}
+
+type Mutation {
+  createUser(data: CreateUserInput!): AuthPayload!
+  deleteUser: User!
+  updateUser(data: UpdateUserInput!): User!
+  login(data: LoginUserInput!): AuthPayload!
+}
+
+enum MutationType {
+  CREATED
+  UPDATED
+  DELETED
+}
+
+type Query {
+  users(query: String, first: Int, skip: Int, after: String, orderBy: UserOrderByInput): [User!]!
+  me: User!
+}
+
+input UpdateUserInput {
+  name: String
+  email: String
+  password: String
+}
+
+type User {
+  id: ID!
+  name: String!
+  email: String
+  password: String!
+  updatedAt: String!
+  createdAt: String!
+}
+
+enum UserOrderByInput {
+  id_ASC
+  id_DESC
+  name_ASC
+  name_DESC
+  email_ASC
+  email_DESC
+  password_ASC
+  password_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  createdAt_ASC
+  createdAt_DESC
+}
