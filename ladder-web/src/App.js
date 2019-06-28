@@ -1,12 +1,17 @@
 import React from "react";
-import UserList from "./components/UserList";
-import Login from "./components/Login";
+
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import Main from "./components/Main";
+import Ladder from "./components/Ladder";
+
 function App() {
     return (
-        <div>
-            <UserList />
-            <Login />
-        </div>
+        <Router>
+            <Switch>
+                <Route path="/" exact component={Main} />
+                <Route path="/ladder" exact component={Ladder} />
+            </Switch>
+        </Router>
     );
 }
 
