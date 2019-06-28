@@ -1,1 +1,1 @@
-web: cd ladder-backend && yarn start
+web: cd ladder-backend && npm run start
