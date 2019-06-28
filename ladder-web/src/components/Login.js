@@ -37,7 +37,7 @@ const ButtonContainer = styled.div`
 const Button = styled.div`
     ${ButtonBase}
     font-size: 1rem;
-    width: 150px;    
+    width: 150px;
     text-align: center;
 `;
 
@@ -46,78 +46,79 @@ const LoginContainer = styled.div`
     height: 20vh;
     display: flex;
     flex-direction: column;
-    align-items: center;   
-`
+    align-items: center;
+`;
 
 const Login = () => {
     const [login, setLogin] = useState(true);
     const [name, setName] = useState("");
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
-    
-    const UserLogin = () => {
-        return (
-            <React.Fragment>
-                <StyledInput
-                    type="text"
-                    value={email}
-                    placeholder="Email"
-                    name="username"
-                    onChange={e => setEmail(e.target.value)}
-                />
-                <StyledInput
-                    type="password"
-                    placeholder="Password"
-                    value={password}
-                    onChange={e => setPassword(e.target.value)}
-                />
-                <ButtonContainer>
-                    <Button onClick={() => _submitLoginUser(email, password)}>
-                        Login
-                    </Button>
-                    <Button onClick={() => setLogin(false)}>New user</Button>
-                </ButtonContainer>
-            </React.Fragment>
-        );
-    };
 
-    const CreateUser = () => {
-        return (
-            <React.Fragment>
-                <StyledInput
-                    value={email}
-                    type="email"
-                    placeholder="Email"
-                    name="username"
-                    onChange={e => setEmail(e.target.value)}
-                />
-                <StyledInput
-                    value={password}
-                    placeholder="Password"
-                    type="password"
-                    onChange={e => setPassword(e.target.value)}
-                />
-                <StyledInput
-                    value={name}
-                    placeholder="Displayname"
-                    type="text"
-                    name="displayname"
-                    onChange={e => setName(e.target.value)}
-                />
-                <ButtonContainer>
-                    <Button
-                        onClick={() => _submitCreateUser(name, email, password)}
-                    >
-                        Create user
-                    </Button>
-                    <Button onClick={() => setLogin(true)}>Have user</Button>
-                </ButtonContainer>
-            </React.Fragment>
-        );
-    };
     return (
         <LoginContainer>
-            {login ? <UserLogin /> : <CreateUser />}
+            {login ? (
+                <React.Fragment>
+                    <StyledInput
+                        type="text"
+                        value={email}
+                        placeholder="Email"
+                        name="username"
+                        onChange={e => setEmail(e.target.value)}
+                    />
+                    <StyledInput
+                        type="password"
+                        placeholder="Password"
+                        value={password}
+                        onChange={e => setPassword(e.target.value)}
+                    />
+                    <ButtonContainer>
+                        <Button
+                            onClick={() => _submitLoginUser(email, password)}
+                        >
+                            Login
+                        </Button>
+                        <Button onClick={() => setLogin(false)}>
+                            New user
+                        </Button>
+                    </ButtonContainer>
+                </React.Fragment>
+            ) : (
+                <React.Fragment>
+                    <StyledInput
+                        value={email}
+                        type="email"
+                        placeholder="Email"
+                        name="username"
+                        onChange={e => setEmail(e.target.value)}
+                    />
+                    <StyledInput
+                        value={password}
+                        placeholder="Password"
+                        type="password"
+                        onChange={e => setPassword(e.target.value)}
+                    />
+                    <StyledInput
+                        value={name}
+                        placeholder="Displayname"
+                        type="text"
+                        name="displayname"
+                        onChange={e => setName(e.target.value)}
+                    />
+                    <ButtonContainer>
+                        <Button
+                            onClick={() =>
+                                _submitCreateUser(name, email, password)
+                            }
+                        >
+                            Create user
+                        </Button>
+                        <Button onClick={() => setLogin(true)}>
+                            Have user
+                        </Button>
+                    </ButtonContainer>
+                </React.Fragment>
+            )}
         </LoginContainer>
     );
 };
