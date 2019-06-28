@@ -6,5 +6,9 @@
     "repository": "https://github.com/donjo9/oldboys-ladder",
     "author": "donjo9 @ lvl42",
     "license": "MIT",
-    "private": true
+    "private": true,
+    "workspaces": [
+        "ladder-web",
+        "ladder-backend"
+    ]
 }
