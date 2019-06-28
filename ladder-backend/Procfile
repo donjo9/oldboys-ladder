@@ -1,1 +1,1 @@
-web: yarn start
+web: cd ladder-backend && yarn start
