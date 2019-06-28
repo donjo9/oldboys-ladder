@@ -1,7 +1,7 @@
 import { Environment, Network, RecordSource, Store } from "relay-runtime";
 
 function fetchQuery(operations, variables) {
-    return fetch("http://localhost:4000", {
+    return fetch(process.env.REACT_APP_GRAPHQL_ENDPOINT, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
