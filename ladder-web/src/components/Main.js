@@ -65,7 +65,7 @@ const Main = () => {
     const [login, setLogin] = useState(false);
     return (
         <MainContainer>
-            <Modal visable={true} dismiss={() => setLogin(false)}>
+            <Modal visable={login} dismiss={() => setLogin(false)}>
                 <Login />
             </Modal>
             <HeadLine>Old Boys Liga!</HeadLine>
