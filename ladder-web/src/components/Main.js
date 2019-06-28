@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import Login from "./Login";
 import { Link } from "react-router-dom";
+import { ButtonBase } from "./Button";
 import Modal from "./Modal";
 
 const MainContainer = styled.main`
@@ -34,26 +35,6 @@ const ButtonContainer = styled.div`
     align-items: center;
 `;
 
-const ButtonBase = css`
-    background-color: var(--button-background);
-    border: 2px solid var(--button-border);
-    color: white;
-    border-radius: 5px;
-    font-size: 1.2rem;
-    font-weight: 400;
-    padding: 1rem 2rem;
-    margin: 0 1.5rem;
-    box-shadow: 0 0 8px 2px var(--button-border);
-    text-decoration: none;
-    line-height: 1.2rem;
-    display: block;
-    cursor: pointer;
-    &:hover,
-    &:active {
-        border: 2px solid var(--button-border);
-        box-shadow: 0 0 8px 2px var(--border-hightlight);
-    }
-`;
 const LinkButton = styled(Link)`
     ${ButtonBase}
 `;
