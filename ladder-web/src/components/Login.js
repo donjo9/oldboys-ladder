@@ -1,16 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
+import { withRouter } from "react-router-dom";
 import styled from "styled-components";
 import CreateUserMutation from "../mutations/CreateUserMutation";
 import LoginUserMutation from "../mutations/LoginUserMutation";
 import { ButtonBase } from "./Button";
-
-const log = (id, token) => console.log(id, token);
-const _submitCreateUser = (name, email, password) => {
-    CreateUserMutation(name, email, password, log);
-};
-const _submitLoginUser = (email, password) => {
-    LoginUserMutation(email, password, log);
-};
+import { AUTHTOKEN, USERID } from "../constants";
 
 const StyledInput = styled.input`
     width: 250px;
@@ -49,12 +43,56 @@ const LoginContainer = styled.div`
     align-items: center;
 `;
 
-const Login = () => {
+const Error = styled.span`
+    color: #ffc71d;
+`;
+
+const log = (id, token) => console.log(id, token);
+
+const Login = props => {
     const [login, setLogin] = useState(true);
     const [name, setName] = useState("");
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
+    const [error, setError] = useState("");
+    const _submitLoginUser = useCallback(
+        (email, password) => {
+            LoginUserMutation(
+                email,
+                password,
+                (id, token) => {
+                    log(id, token);
+                    localStorage.setItem(AUTHTOKEN, token);
+                    localStorage.setItem(USERID, id);
+                    props.history.push("/ladder");
+                },
+                err => {
+                    setError(err.source.errors[0].message);
+                }
+            );
+        },
+        [props.history]
+    );
 
+    const _submitCreateUser = useCallback(
+        (name, email, password) => {
+            CreateUserMutation(
+                name,
+                email,
+                password,
+                (id, token) => {
+                    log(id, token);
+                    localStorage.setItem(AUTHTOKEN, token);
+                    localStorage.setItem(USERID, id);
+                    props.history.push("/ladder");
+                },
+                err => {
+                    setError(err.source.errors[0].message);
+                }
+            );
+        },
+        [props.history]
+    );
     return (
         <LoginContainer>
             {login ? (
@@ -72,9 +110,14 @@ const Login = () => {
                         value={password}
                         onChange={e => setPassword(e.target.value)}
                     />
+                    <Error>{error}</Error>
                     <ButtonContainer>
                         <Button
-                            onClick={() => _submitLoginUser(email, password)}
+                            onClick={() => {
+                                if (_submitLoginUser(email, password)) {
+                                    props.history.push("/ladder");
+                                }
+                            }}
                         >
                             Login
                         </Button>
@@ -105,11 +148,13 @@ const Login = () => {
                         name="displayname"
                         onChange={e => setName(e.target.value)}
                     />
+                    <Error>{error}</Error>
                     <ButtonContainer>
                         <Button
-                            onClick={() =>
-                                _submitCreateUser(name, email, password)
-                            }
+                            onClick={() => {
+                                _submitCreateUser(name, email, password);
+                                props.history.push("/ladder");
+                            }}
                         >
                             Create user
                         </Button>
@@ -123,4 +168,4 @@ const Login = () => {
     );
 };
 
-export default Login;
+export default withRouter(Login);

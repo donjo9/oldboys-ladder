@@ -13,7 +13,7 @@ const mutation = graphql`
     }
 `;
 
-export default (name, email, password, callback) => {
+export default (name, email, password, callback, onerror) => {
     const variables = {
         createUserInput: {
             name,
@@ -30,6 +30,6 @@ export default (name, email, password, callback) => {
             const token = response.createUser.token;
             callback(id, token);
         },
-        onError: error => console.log(error)
+        onError: error => onerror(error)
     });
 };
