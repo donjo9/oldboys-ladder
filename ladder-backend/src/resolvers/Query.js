@@ -20,6 +20,10 @@ const Query = {
         }
         return prisma.query.users(opArgs, info);
     },
+    teams(parent, args, { prisma }, info) {
+        const opArgs = {};
+        return prisma.query.teams(opArgs, info);
+    },
     async me(parent, args, { prisma, request }, info) {
         const userId = getUserId(request);
 

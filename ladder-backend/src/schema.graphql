@@ -1,6 +1,7 @@
 #import UserOrderByInput from './generated/prisma.graphql'
 
 type Query {
+    teams: [Team!]!
     users(
         query: String
         first: Int
@@ -13,6 +14,7 @@ type Query {
 
 type Mutation {
     createUser(data: CreateUserInput!): AuthPayload!
+    createTeam(data: CreateTeamInput!): Team!
     deleteUser: User!
     updateUser(data: UpdateUserInput!): User!
     login(data: LoginUserInput!): AuthPayload!
@@ -33,6 +35,10 @@ input CreateUserInput {
     password: String!
 }
 
+input CreateTeamInput {
+    name: String!
+    shortname: String!
+}
 input LoginUserInput {
     email: String!
     password: String!
@@ -49,8 +55,20 @@ type User {
     name: String!
     email: String
     password: String!
+    team: Team
     updatedAt: String!
     createdAt: String!
+}
+
+type Team {
+    id: ID!
+    name: String!
+    shortname: String!
+    updatedAt: String!
+    createdAt: String!
+    owner: User!
+    admin: [User!]!
+    players: [User!]!
 }
 
 enum MutationType {

@@ -70,6 +70,39 @@ const Mutation = {
             },
             info
         );
+    },
+    async createTeam(parent, args, { prisma, request }, info) {
+        const userId = getUserId(request);
+        if (!userId) {
+            throw new Error("Please login to create new team");
+        }
+        const userHasTeam = await prisma.exists.Team({
+            owner: {
+                id: userId
+            }
+        });
+
+        if (userHasTeam) {
+            throw new Error("Only on team pr. user");
+        }
+        return prisma.mutation.createTeam(
+            {
+                data: {
+                    ...args.data,
+                    owner: {
+                        connect: {
+                            id: userId
+                        }
+                    },
+                    players: {
+                        connect: {
+                            id: userId
+                        }
+                    }
+                }
+            },
+            info
+        );
     }
 };
 

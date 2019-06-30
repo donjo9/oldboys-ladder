@@ -5,4 +5,16 @@ type User {
     password: String!
     updatedAt: DateTime! @updatedAt 
     createdAt: DateTime! @createdAt
+    team: Team @relation (name: "TeamOwnerToUser", onDelete: CASCADE)
+}
+
+type Team {
+    id: ID! @id
+    name: String!
+    shortname: String!
+    updatedAt: DateTime! @updatedAt 
+    createdAt: DateTime! @createdAt
+    owner: User! @relation (name: "TeamOwnerToUser", onDelete: SET_NULL)
+    admin: [User!]! @relation (name: "TeamAdminToUser", onDelete: SET_NULL)
+    players: [User!]! @relation (name: "TeamToUser", onDelete: SET_NULL)
 }
