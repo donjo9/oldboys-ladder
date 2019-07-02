@@ -2,7 +2,7 @@ type AggregateTeam {
   count: Int!
 }
 
-type AggregateTeamRelation {
+type AggregateTeamOwner {
   count: Int!
 }
 
@@ -25,12 +25,11 @@ type Mutation {
   upsertTeam(where: TeamWhereUniqueInput!, create: TeamCreateInput!, update: TeamUpdateInput!): Team!
   deleteTeam(where: TeamWhereUniqueInput!): Team
   deleteManyTeams(where: TeamWhereInput): BatchPayload!
-  createTeamRelation(data: TeamRelationCreateInput!): TeamRelation!
-  updateTeamRelation(data: TeamRelationUpdateInput!, where: TeamRelationWhereUniqueInput!): TeamRelation
-  updateManyTeamRelations(data: TeamRelationUpdateManyMutationInput!, where: TeamRelationWhereInput): BatchPayload!
-  upsertTeamRelation(where: TeamRelationWhereUniqueInput!, create: TeamRelationCreateInput!, update: TeamRelationUpdateInput!): TeamRelation!
-  deleteTeamRelation(where: TeamRelationWhereUniqueInput!): TeamRelation
-  deleteManyTeamRelations(where: TeamRelationWhereInput): BatchPayload!
+  createTeamOwner(data: TeamOwnerCreateInput!): TeamOwner!
+  updateTeamOwner(data: TeamOwnerUpdateInput!, where: TeamOwnerWhereUniqueInput!): TeamOwner
+  upsertTeamOwner(where: TeamOwnerWhereUniqueInput!, create: TeamOwnerCreateInput!, update: TeamOwnerUpdateInput!): TeamOwner!
+  deleteTeamOwner(where: TeamOwnerWhereUniqueInput!): TeamOwner
+  deleteManyTeamOwners(where: TeamOwnerWhereInput): BatchPayload!
   createUser(data: UserCreateInput!): User!
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
   updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
@@ -60,9 +59,9 @@ type Query {
   team(where: TeamWhereUniqueInput!): Team
   teams(where: TeamWhereInput, orderBy: TeamOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Team]!
   teamsConnection(where: TeamWhereInput, orderBy: TeamOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): TeamConnection!
-  teamRelation(where: TeamRelationWhereUniqueInput!): TeamRelation
-  teamRelations(where: TeamRelationWhereInput, orderBy: TeamRelationOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [TeamRelation]!
-  teamRelationsConnection(where: TeamRelationWhereInput, orderBy: TeamRelationOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): TeamRelationConnection!
+  teamOwner(where: TeamOwnerWhereUniqueInput!): TeamOwner
+  teamOwners(where: TeamOwnerWhereInput, orderBy: TeamOwnerOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [TeamOwner]!
+  teamOwnersConnection(where: TeamOwnerWhereInput, orderBy: TeamOwnerOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): TeamOwnerConnection!
   user(where: UserWhereUniqueInput!): User
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
@@ -71,7 +70,7 @@ type Query {
 
 type Subscription {
   team(where: TeamSubscriptionWhereInput): TeamSubscriptionPayload
-  teamRelation(where: TeamRelationSubscriptionWhereInput): TeamRelationSubscriptionPayload
+  teamOwner(where: TeamOwnerSubscriptionWhereInput): TeamOwnerSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
 }
 
@@ -81,7 +80,9 @@ type Team {
   shortname: String!
   updatedAt: DateTime!
   createdAt: DateTime!
-  players(where: TeamRelationWhereInput, orderBy: TeamRelationOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [TeamRelation!]
+  owner: TeamOwner!
+  players(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User!]
+  points: Int!
 }
 
 type TeamConnection {
@@ -94,7 +95,14 @@ input TeamCreateInput {
   id: ID
   name: String!
   shortname: String!
-  players: TeamRelationCreateManyWithoutTeamInput
+  owner: TeamOwnerCreateOneWithoutTeamInput!
+  players: UserCreateManyWithoutTeamInput
+  points: Int
+}
+
+input TeamCreateOneWithoutOwnerInput {
+  create: TeamCreateWithoutOwnerInput
+  connect: TeamWhereUniqueInput
 }
 
 input TeamCreateOneWithoutPlayersInput {
@@ -102,10 +110,20 @@ input TeamCreateOneWithoutPlayersInput {
   connect: TeamWhereUniqueInput
 }
 
+input TeamCreateWithoutOwnerInput {
+  id: ID
+  name: String!
+  shortname: String!
+  players: UserCreateManyWithoutTeamInput
+  points: Int
+}
+
 input TeamCreateWithoutPlayersInput {
   id: ID
   name: String!
   shortname: String!
+  owner: TeamOwnerCreateOneWithoutTeamInput!
+  points: Int
 }
 
 type TeamEdge {
@@ -124,6 +142,143 @@ enum TeamOrderByInput {
   updatedAt_DESC
   createdAt_ASC
   createdAt_DESC
+  points_ASC
+  points_DESC
+}
+
+type TeamOwner {
+  id: ID!
+  user: User!
+  team: Team!
+}
+
+type TeamOwnerConnection {
+  pageInfo: PageInfo!
+  edges: [TeamOwnerEdge]!
+  aggregate: AggregateTeamOwner!
+}
+
+input TeamOwnerCreateInput {
+  id: ID
+  user: UserCreateOneWithoutOwnTeamInput!
+  team: TeamCreateOneWithoutOwnerInput!
+}
+
+input TeamOwnerCreateOneWithoutTeamInput {
+  create: TeamOwnerCreateWithoutTeamInput
+  connect: TeamOwnerWhereUniqueInput
+}
+
+input TeamOwnerCreateOneWithoutUserInput {
+  create: TeamOwnerCreateWithoutUserInput
+  connect: TeamOwnerWhereUniqueInput
+}
+
+input TeamOwnerCreateWithoutTeamInput {
+  id: ID
+  user: UserCreateOneWithoutOwnTeamInput!
+}
+
+input TeamOwnerCreateWithoutUserInput {
+  id: ID
+  team: TeamCreateOneWithoutOwnerInput!
+}
+
+type TeamOwnerEdge {
+  node: TeamOwner!
+  cursor: String!
+}
+
+enum TeamOwnerOrderByInput {
+  id_ASC
+  id_DESC
+}
+
+type TeamOwnerPreviousValues {
+  id: ID!
+}
+
+type TeamOwnerSubscriptionPayload {
+  mutation: MutationType!
+  node: TeamOwner
+  updatedFields: [String!]
+  previousValues: TeamOwnerPreviousValues
+}
+
+input TeamOwnerSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: TeamOwnerWhereInput
+  AND: [TeamOwnerSubscriptionWhereInput!]
+  OR: [TeamOwnerSubscriptionWhereInput!]
+  NOT: [TeamOwnerSubscriptionWhereInput!]
+}
+
+input TeamOwnerUpdateInput {
+  user: UserUpdateOneRequiredWithoutOwnTeamInput
+  team: TeamUpdateOneRequiredWithoutOwnerInput
+}
+
+input TeamOwnerUpdateOneRequiredWithoutTeamInput {
+  create: TeamOwnerCreateWithoutTeamInput
+  update: TeamOwnerUpdateWithoutTeamDataInput
+  upsert: TeamOwnerUpsertWithoutTeamInput
+  connect: TeamOwnerWhereUniqueInput
+}
+
+input TeamOwnerUpdateOneWithoutUserInput {
+  create: TeamOwnerCreateWithoutUserInput
+  update: TeamOwnerUpdateWithoutUserDataInput
+  upsert: TeamOwnerUpsertWithoutUserInput
+  delete: Boolean
+  disconnect: Boolean
+  connect: TeamOwnerWhereUniqueInput
+}
+
+input TeamOwnerUpdateWithoutTeamDataInput {
+  user: UserUpdateOneRequiredWithoutOwnTeamInput
+}
+
+input TeamOwnerUpdateWithoutUserDataInput {
+  team: TeamUpdateOneRequiredWithoutOwnerInput
+}
+
+input TeamOwnerUpsertWithoutTeamInput {
+  update: TeamOwnerUpdateWithoutTeamDataInput!
+  create: TeamOwnerCreateWithoutTeamInput!
+}
+
+input TeamOwnerUpsertWithoutUserInput {
+  update: TeamOwnerUpdateWithoutUserDataInput!
+  create: TeamOwnerCreateWithoutUserInput!
+}
+
+input TeamOwnerWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  user: UserWhereInput
+  team: TeamWhereInput
+  AND: [TeamOwnerWhereInput!]
+  OR: [TeamOwnerWhereInput!]
+  NOT: [TeamOwnerWhereInput!]
+}
+
+input TeamOwnerWhereUniqueInput {
+  id: ID
 }
 
 type TeamPreviousValues {
@@ -132,209 +287,7 @@ type TeamPreviousValues {
   shortname: String!
   updatedAt: DateTime!
   createdAt: DateTime!
-}
-
-type TeamRelation {
-  id: ID!
-  player: User!
-  team: Team!
-  role: TeamRole!
-}
-
-type TeamRelationConnection {
-  pageInfo: PageInfo!
-  edges: [TeamRelationEdge]!
-  aggregate: AggregateTeamRelation!
-}
-
-input TeamRelationCreateInput {
-  id: ID
-  player: UserCreateOneWithoutTeamInput!
-  team: TeamCreateOneWithoutPlayersInput!
-  role: TeamRole!
-}
-
-input TeamRelationCreateManyWithoutTeamInput {
-  create: [TeamRelationCreateWithoutTeamInput!]
-  connect: [TeamRelationWhereUniqueInput!]
-}
-
-input TeamRelationCreateOneWithoutPlayerInput {
-  create: TeamRelationCreateWithoutPlayerInput
-  connect: TeamRelationWhereUniqueInput
-}
-
-input TeamRelationCreateWithoutPlayerInput {
-  id: ID
-  team: TeamCreateOneWithoutPlayersInput!
-  role: TeamRole!
-}
-
-input TeamRelationCreateWithoutTeamInput {
-  id: ID
-  player: UserCreateOneWithoutTeamInput!
-  role: TeamRole!
-}
-
-type TeamRelationEdge {
-  node: TeamRelation!
-  cursor: String!
-}
-
-enum TeamRelationOrderByInput {
-  id_ASC
-  id_DESC
-  role_ASC
-  role_DESC
-}
-
-type TeamRelationPreviousValues {
-  id: ID!
-  role: TeamRole!
-}
-
-input TeamRelationScalarWhereInput {
-  id: ID
-  id_not: ID
-  id_in: [ID!]
-  id_not_in: [ID!]
-  id_lt: ID
-  id_lte: ID
-  id_gt: ID
-  id_gte: ID
-  id_contains: ID
-  id_not_contains: ID
-  id_starts_with: ID
-  id_not_starts_with: ID
-  id_ends_with: ID
-  id_not_ends_with: ID
-  role: TeamRole
-  role_not: TeamRole
-  role_in: [TeamRole!]
-  role_not_in: [TeamRole!]
-  AND: [TeamRelationScalarWhereInput!]
-  OR: [TeamRelationScalarWhereInput!]
-  NOT: [TeamRelationScalarWhereInput!]
-}
-
-type TeamRelationSubscriptionPayload {
-  mutation: MutationType!
-  node: TeamRelation
-  updatedFields: [String!]
-  previousValues: TeamRelationPreviousValues
-}
-
-input TeamRelationSubscriptionWhereInput {
-  mutation_in: [MutationType!]
-  updatedFields_contains: String
-  updatedFields_contains_every: [String!]
-  updatedFields_contains_some: [String!]
-  node: TeamRelationWhereInput
-  AND: [TeamRelationSubscriptionWhereInput!]
-  OR: [TeamRelationSubscriptionWhereInput!]
-  NOT: [TeamRelationSubscriptionWhereInput!]
-}
-
-input TeamRelationUpdateInput {
-  player: UserUpdateOneRequiredWithoutTeamInput
-  team: TeamUpdateOneRequiredWithoutPlayersInput
-  role: TeamRole
-}
-
-input TeamRelationUpdateManyDataInput {
-  role: TeamRole
-}
-
-input TeamRelationUpdateManyMutationInput {
-  role: TeamRole
-}
-
-input TeamRelationUpdateManyWithoutTeamInput {
-  create: [TeamRelationCreateWithoutTeamInput!]
-  delete: [TeamRelationWhereUniqueInput!]
-  connect: [TeamRelationWhereUniqueInput!]
-  set: [TeamRelationWhereUniqueInput!]
-  disconnect: [TeamRelationWhereUniqueInput!]
-  update: [TeamRelationUpdateWithWhereUniqueWithoutTeamInput!]
-  upsert: [TeamRelationUpsertWithWhereUniqueWithoutTeamInput!]
-  deleteMany: [TeamRelationScalarWhereInput!]
-  updateMany: [TeamRelationUpdateManyWithWhereNestedInput!]
-}
-
-input TeamRelationUpdateManyWithWhereNestedInput {
-  where: TeamRelationScalarWhereInput!
-  data: TeamRelationUpdateManyDataInput!
-}
-
-input TeamRelationUpdateOneWithoutPlayerInput {
-  create: TeamRelationCreateWithoutPlayerInput
-  update: TeamRelationUpdateWithoutPlayerDataInput
-  upsert: TeamRelationUpsertWithoutPlayerInput
-  delete: Boolean
-  disconnect: Boolean
-  connect: TeamRelationWhereUniqueInput
-}
-
-input TeamRelationUpdateWithoutPlayerDataInput {
-  team: TeamUpdateOneRequiredWithoutPlayersInput
-  role: TeamRole
-}
-
-input TeamRelationUpdateWithoutTeamDataInput {
-  player: UserUpdateOneRequiredWithoutTeamInput
-  role: TeamRole
-}
-
-input TeamRelationUpdateWithWhereUniqueWithoutTeamInput {
-  where: TeamRelationWhereUniqueInput!
-  data: TeamRelationUpdateWithoutTeamDataInput!
-}
-
-input TeamRelationUpsertWithoutPlayerInput {
-  update: TeamRelationUpdateWithoutPlayerDataInput!
-  create: TeamRelationCreateWithoutPlayerInput!
-}
-
-input TeamRelationUpsertWithWhereUniqueWithoutTeamInput {
-  where: TeamRelationWhereUniqueInput!
-  update: TeamRelationUpdateWithoutTeamDataInput!
-  create: TeamRelationCreateWithoutTeamInput!
-}
-
-input TeamRelationWhereInput {
-  id: ID
-  id_not: ID
-  id_in: [ID!]
-  id_not_in: [ID!]
-  id_lt: ID
-  id_lte: ID
-  id_gt: ID
-  id_gte: ID
-  id_contains: ID
-  id_not_contains: ID
-  id_starts_with: ID
-  id_not_starts_with: ID
-  id_ends_with: ID
-  id_not_ends_with: ID
-  player: UserWhereInput
-  team: TeamWhereInput
-  role: TeamRole
-  role_not: TeamRole
-  role_in: [TeamRole!]
-  role_not_in: [TeamRole!]
-  AND: [TeamRelationWhereInput!]
-  OR: [TeamRelationWhereInput!]
-  NOT: [TeamRelationWhereInput!]
-}
-
-input TeamRelationWhereUniqueInput {
-  id: ID
-}
-
-enum TeamRole {
-  OWNER
-  ADMIN
-  PLAYER
+  points: Int!
 }
 
 type TeamSubscriptionPayload {
@@ -358,24 +311,50 @@ input TeamSubscriptionWhereInput {
 input TeamUpdateInput {
   name: String
   shortname: String
-  players: TeamRelationUpdateManyWithoutTeamInput
+  owner: TeamOwnerUpdateOneRequiredWithoutTeamInput
+  players: UserUpdateManyWithoutTeamInput
+  points: Int
 }
 
 input TeamUpdateManyMutationInput {
   name: String
   shortname: String
+  points: Int
 }
 
-input TeamUpdateOneRequiredWithoutPlayersInput {
+input TeamUpdateOneRequiredWithoutOwnerInput {
+  create: TeamCreateWithoutOwnerInput
+  update: TeamUpdateWithoutOwnerDataInput
+  upsert: TeamUpsertWithoutOwnerInput
+  connect: TeamWhereUniqueInput
+}
+
+input TeamUpdateOneWithoutPlayersInput {
   create: TeamCreateWithoutPlayersInput
   update: TeamUpdateWithoutPlayersDataInput
   upsert: TeamUpsertWithoutPlayersInput
+  delete: Boolean
+  disconnect: Boolean
   connect: TeamWhereUniqueInput
+}
+
+input TeamUpdateWithoutOwnerDataInput {
+  name: String
+  shortname: String
+  players: UserUpdateManyWithoutTeamInput
+  points: Int
 }
 
 input TeamUpdateWithoutPlayersDataInput {
   name: String
   shortname: String
+  owner: TeamOwnerUpdateOneRequiredWithoutTeamInput
+  points: Int
+}
+
+input TeamUpsertWithoutOwnerInput {
+  update: TeamUpdateWithoutOwnerDataInput!
+  create: TeamCreateWithoutOwnerInput!
 }
 
 input TeamUpsertWithoutPlayersInput {
@@ -442,9 +421,18 @@ input TeamWhereInput {
   createdAt_lte: DateTime
   createdAt_gt: DateTime
   createdAt_gte: DateTime
-  players_every: TeamRelationWhereInput
-  players_some: TeamRelationWhereInput
-  players_none: TeamRelationWhereInput
+  owner: TeamOwnerWhereInput
+  players_every: UserWhereInput
+  players_some: UserWhereInput
+  players_none: UserWhereInput
+  points: Int
+  points_not: Int
+  points_in: [Int!]
+  points_not_in: [Int!]
+  points_lt: Int
+  points_lte: Int
+  points_gt: Int
+  points_gte: Int
   AND: [TeamWhereInput!]
   OR: [TeamWhereInput!]
   NOT: [TeamWhereInput!]
@@ -461,7 +449,8 @@ type User {
   password: String!
   updatedAt: DateTime!
   createdAt: DateTime!
-  team: TeamRelation
+  ownTeam: TeamOwner
+  team: Team
 }
 
 type UserConnection {
@@ -475,12 +464,26 @@ input UserCreateInput {
   name: String!
   email: String!
   password: String!
-  team: TeamRelationCreateOneWithoutPlayerInput
+  ownTeam: TeamOwnerCreateOneWithoutUserInput
+  team: TeamCreateOneWithoutPlayersInput
 }
 
-input UserCreateOneWithoutTeamInput {
-  create: UserCreateWithoutTeamInput
+input UserCreateManyWithoutTeamInput {
+  create: [UserCreateWithoutTeamInput!]
+  connect: [UserWhereUniqueInput!]
+}
+
+input UserCreateOneWithoutOwnTeamInput {
+  create: UserCreateWithoutOwnTeamInput
   connect: UserWhereUniqueInput
+}
+
+input UserCreateWithoutOwnTeamInput {
+  id: ID
+  name: String!
+  email: String!
+  password: String!
+  team: TeamCreateOneWithoutPlayersInput
 }
 
 input UserCreateWithoutTeamInput {
@@ -488,6 +491,7 @@ input UserCreateWithoutTeamInput {
   name: String!
   email: String!
   password: String!
+  ownTeam: TeamOwnerCreateOneWithoutUserInput
 }
 
 type UserEdge {
@@ -519,6 +523,84 @@ type UserPreviousValues {
   createdAt: DateTime!
 }
 
+input UserScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  email: String
+  email_not: String
+  email_in: [String!]
+  email_not_in: [String!]
+  email_lt: String
+  email_lte: String
+  email_gt: String
+  email_gte: String
+  email_contains: String
+  email_not_contains: String
+  email_starts_with: String
+  email_not_starts_with: String
+  email_ends_with: String
+  email_not_ends_with: String
+  password: String
+  password_not: String
+  password_in: [String!]
+  password_not_in: [String!]
+  password_lt: String
+  password_lte: String
+  password_gt: String
+  password_gte: String
+  password_contains: String
+  password_not_contains: String
+  password_starts_with: String
+  password_not_starts_with: String
+  password_ends_with: String
+  password_not_ends_with: String
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  AND: [UserScalarWhereInput!]
+  OR: [UserScalarWhereInput!]
+  NOT: [UserScalarWhereInput!]
+}
+
 type UserSubscriptionPayload {
   mutation: MutationType!
   node: User
@@ -541,7 +623,14 @@ input UserUpdateInput {
   name: String
   email: String
   password: String
-  team: TeamRelationUpdateOneWithoutPlayerInput
+  ownTeam: TeamOwnerUpdateOneWithoutUserInput
+  team: TeamUpdateOneWithoutPlayersInput
+}
+
+input UserUpdateManyDataInput {
+  name: String
+  email: String
+  password: String
 }
 
 input UserUpdateManyMutationInput {
@@ -550,20 +639,56 @@ input UserUpdateManyMutationInput {
   password: String
 }
 
-input UserUpdateOneRequiredWithoutTeamInput {
-  create: UserCreateWithoutTeamInput
-  update: UserUpdateWithoutTeamDataInput
-  upsert: UserUpsertWithoutTeamInput
+input UserUpdateManyWithoutTeamInput {
+  create: [UserCreateWithoutTeamInput!]
+  delete: [UserWhereUniqueInput!]
+  connect: [UserWhereUniqueInput!]
+  set: [UserWhereUniqueInput!]
+  disconnect: [UserWhereUniqueInput!]
+  update: [UserUpdateWithWhereUniqueWithoutTeamInput!]
+  upsert: [UserUpsertWithWhereUniqueWithoutTeamInput!]
+  deleteMany: [UserScalarWhereInput!]
+  updateMany: [UserUpdateManyWithWhereNestedInput!]
+}
+
+input UserUpdateManyWithWhereNestedInput {
+  where: UserScalarWhereInput!
+  data: UserUpdateManyDataInput!
+}
+
+input UserUpdateOneRequiredWithoutOwnTeamInput {
+  create: UserCreateWithoutOwnTeamInput
+  update: UserUpdateWithoutOwnTeamDataInput
+  upsert: UserUpsertWithoutOwnTeamInput
   connect: UserWhereUniqueInput
+}
+
+input UserUpdateWithoutOwnTeamDataInput {
+  name: String
+  email: String
+  password: String
+  team: TeamUpdateOneWithoutPlayersInput
 }
 
 input UserUpdateWithoutTeamDataInput {
   name: String
   email: String
   password: String
+  ownTeam: TeamOwnerUpdateOneWithoutUserInput
 }
 
-input UserUpsertWithoutTeamInput {
+input UserUpdateWithWhereUniqueWithoutTeamInput {
+  where: UserWhereUniqueInput!
+  data: UserUpdateWithoutTeamDataInput!
+}
+
+input UserUpsertWithoutOwnTeamInput {
+  update: UserUpdateWithoutOwnTeamDataInput!
+  create: UserCreateWithoutOwnTeamInput!
+}
+
+input UserUpsertWithWhereUniqueWithoutTeamInput {
+  where: UserWhereUniqueInput!
   update: UserUpdateWithoutTeamDataInput!
   create: UserCreateWithoutTeamInput!
 }
@@ -641,7 +766,8 @@ input UserWhereInput {
   createdAt_lte: DateTime
   createdAt_gt: DateTime
   createdAt_gte: DateTime
-  team: TeamRelationWhereInput
+  ownTeam: TeamOwnerWhereInput
+  team: TeamWhereInput
   AND: [UserWhereInput!]
   OR: [UserWhereInput!]
   NOT: [UserWhereInput!]

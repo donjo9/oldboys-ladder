@@ -54,21 +54,26 @@ type User {
     id: ID!
     name: String!
     email: String
-    password: String!
     team: Team
+    ownTeam: TeamOwner
     updatedAt: String!
     createdAt: String!
+}
+type TeamOwner {
+    id: ID!
+    user: User!
+    team: Team!
 }
 
 type Team {
     id: ID!
     name: String!
     shortname: String!
-    updatedAt: String!
-    createdAt: String!
-    owner: User!
-    admin: [User!]!
+    updatedAt: DateTime!
+    createdAt: DateTime!
+    owner: TeamOwner!
     players: [User!]!
+    points: Int!
 }
 
 enum MutationType {

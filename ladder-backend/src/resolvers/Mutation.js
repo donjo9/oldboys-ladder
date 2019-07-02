@@ -90,8 +90,12 @@ const Mutation = {
                 data: {
                     ...args.data,
                     owner: {
-                        connect: {
-                            id: userId
+                        create: {
+                            user: {
+                                connect: {
+                                    id: userId
+                                }
+                            }
                         }
                     },
                     players: {
