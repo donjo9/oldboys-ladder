@@ -5,7 +5,14 @@ type User {
     password: String!
     updatedAt: DateTime! @updatedAt 
     createdAt: DateTime! @createdAt
-    team: Team @relation (name: "TeamOwnerToUser", onDelete: CASCADE)
+    team: TeamRelation @relation(name: "UserToTeam", onDelete: CASCADE)
+}
+
+type TeamRelation {
+    id: ID! @id
+    player: User! @relation(name: "UserToTeam", onDelete: SET_NULL, link: TABLE)
+    team: Team! @relation(name: "TeamToUser", onDelete: SET_NULL, link: TABLE)
+    role: TeamRole!
 }
 
 type Team {
@@ -14,7 +21,11 @@ type Team {
     shortname: String!
     updatedAt: DateTime! @updatedAt 
     createdAt: DateTime! @createdAt
-    owner: User! @relation (name: "TeamOwnerToUser", onDelete: SET_NULL)
-    admin: [User!]! @relation (name: "TeamAdminToUser", onDelete: SET_NULL)
-    players: [User!]! @relation (name: "TeamToUser", onDelete: SET_NULL)
+    players: [TeamRelation!]! @relation (name: "TeamToUser", onDelete: CASCADE)
+}
+
+enum TeamRole {
+    OWNER
+    ADMIN
+    PLAYER
 }
