@@ -9,20 +9,8 @@ const MainContainer = styled.main`
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
     flex-direction: column;
-`;
-
-const HeadLine = styled.h1`
-    width: 100%;
-    background: var(--background);
-    height: 15vh;
-    line-height: 15vh;
-    text-align: center;
-    margin: 0;
-    padding: 0;
-    font-size: 3rem;
-    font-family: "Martel", serif;
+    flex-grow: 1;
 `;
 
 const ButtonContainer = styled.div`
@@ -49,7 +37,6 @@ const Main = () => {
             <Modal visable={login} dismiss={() => setLogin(false)}>
                 <Login />
             </Modal>
-            <HeadLine>Old Boys Liga!</HeadLine>
             <ButtonContainer>
                 <LinkButton to="/ladder">Enter</LinkButton>
                 <Button onClick={() => setLogin(true)}>Login</Button>

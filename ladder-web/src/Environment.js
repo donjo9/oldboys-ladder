@@ -1,10 +1,12 @@
 import { Environment, Network, RecordSource, Store } from "relay-runtime";
+import { AUTHTOKEN } from "./constants";
 
 function fetchQuery(operations, variables) {
     return fetch(process.env.REACT_APP_GRAPHQL_ENDPOINT, {
         method: "POST",
         headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            Authorization: localStorage.getItem(AUTHTOKEN)
         },
         body: JSON.stringify({ query: operations.text, variables })
     }).then(respons => respons.json());

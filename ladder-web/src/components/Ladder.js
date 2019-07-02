@@ -1,8 +1,8 @@
 import React from "react";
-import UserList from "./UserList";
+import TeamList from "./TeamList";
 
 const Ladder = () => {
-    return <UserList />;
+    return <TeamList />;
 };
 
 export default Ladder;
