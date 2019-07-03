@@ -33,21 +33,31 @@ const NavLink = styled(Link)`
     font-size: 1.2rem;
 `;
 
-const Header = props => {
-    const [loggedIn, setLoggedIn] = useState(false);
+const test = log => {
+    console.log(log);
+};
+
+export const usePersistedState = (key, defaultValue) => {
+    const [state, setState] = React.useState(
+        () => JSON.parse(localStorage.getItem(key)) || defaultValue
+    );
     useEffect(() => {
-        const authtoken = localStorage.getItem(AUTHTOKEN);
-        console.log(authtoken);
-        if (authtoken !== null) {
-            setLoggedIn(true);
-        }
-    }, []);
+        localStorage.setItem(key, JSON.stringify(state));
+    }, [key, state]);
+    return [state, setState];
+}
+
+
+
+const Header = props => {
+    const [token] = usePersistedState(AUTHTOKEN, "");
+   
     return (
         <HeaderContainer>
             <HeadLine>Old Boys Liga!</HeadLine>
             <NavBar>
                 <NavLink to="ladder">Ladder</NavLink>
-                {loggedIn ? <NavLink to="profile">Profile</NavLink> : null}
+                {token !== "" ? <NavLink to="profile">Profile</NavLink> : null}
             </NavBar>
         </HeaderContainer>
     );

@@ -6,7 +6,7 @@ function fetchQuery(operations, variables) {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
-            Authorization: localStorage.getItem(AUTHTOKEN)
+            Authorization: `Bearer ${localStorage.getItem(AUTHTOKEN).replace(/"/g,'')}`
         },
         body: JSON.stringify({ query: operations.text, variables })
     }).then(respons => respons.json());

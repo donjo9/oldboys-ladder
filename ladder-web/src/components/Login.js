@@ -5,6 +5,7 @@ import CreateUserMutation from "../mutations/CreateUserMutation";
 import LoginUserMutation from "../mutations/LoginUserMutation";
 import { ButtonBase } from "./Button";
 import { AUTHTOKEN, USERID } from "../constants";
+import { usePersistedState } from "./Header";
 
 const StyledInput = styled.input`
     width: 250px;
@@ -50,6 +51,7 @@ const Error = styled.span`
 const log = (id, token) => console.log(id, token);
 
 const Login = props => {
+    const [token, setToken] = usePersistedState(AUTHTOKEN, "");
     const [login, setLogin] = useState(true);
     const [name, setName] = useState("");
     const [password, setPassword] = useState("");
@@ -62,7 +64,7 @@ const Login = props => {
                 password,
                 (id, token) => {
                     log(id, token);
-                    localStorage.setItem(AUTHTOKEN, token);
+                    setToken(token);
                     localStorage.setItem(USERID, id);
                     props.history.push("/ladder");
                 },
