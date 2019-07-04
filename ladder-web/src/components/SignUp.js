@@ -10,20 +10,23 @@ import { LoginSignUpContainer, StyledInput, Error } from "./LoginSignupCommon";
 
 const log = (id, token) => console.log(id, token);
 
-const Login = props => {
+const SignUp = props => {
     const [token, setToken] = usePersistedState(AUTHTOKEN, "");
     const [login, setLogin] = useState(true);
+    const [name, setName] = useState("");
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
     const [error, setError] = useState("");
-    const _submitLoginUser = useCallback(
-        (email, password) => {
-            LoginUserMutation(
+
+    const _submitCreateUser = useCallback(
+        (name, email, password) => {
+            CreateUserMutation(
+                name,
                 email,
                 password,
                 (id, token) => {
                     log(id, token);
-                    setToken(token);
+                    localStorage.setItem(AUTHTOKEN, token);
                     localStorage.setItem(USERID, id);
                     props.history.push("/ladder");
                 },
@@ -38,30 +41,37 @@ const Login = props => {
     return (
         <LoginSignUpContainer>
             <StyledInput
-                type="text"
                 value={email}
+                type="email"
                 placeholder="Email"
                 name="username"
                 onChange={e => setEmail(e.target.value)}
             />
             <StyledInput
-                type="password"
-                placeholder="Password"
                 value={password}
+                placeholder="Password"
+                type="password"
                 onChange={e => setPassword(e.target.value)}
             />
+            <StyledInput
+                value={name}
+                placeholder="Displayname"
+                type="text"
+                name="displayname"
+                onChange={e => setName(e.target.value)}
+            />
             <Error>{error}</Error>
+
             <Button
                 onClick={() => {
-                    if (_submitLoginUser(email, password)) {
-                        props.history.push("/ladder");
-                    }
+                    _submitCreateUser(name, email, password);
+                    props.history.push("/ladder");
                 }}
             >
-                Login
+                Create user
             </Button>
         </LoginSignUpContainer>
     );
 };
 
-export default withRouter(Login);
+export default withRouter(SignUp);

@@ -11,36 +11,14 @@ const MainContainer = styled.main`
     align-items: center;
     flex-direction: column;
     flex-grow: 1;
+
 `;
 
-const ButtonContainer = styled.div`
-    width: 100%;
-    background: var(--background);
-    height: 15vh;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-`;
 
-const LinkButton = styled(Link)`
-    ${ButtonBase}
-`;
-const Button = styled.button`
-    ${ButtonBase}
-`;
 
 const Main = () => {
-    const [login, setLogin] = useState(false);
     return (
         <MainContainer>
-            <Modal visable={login} dismiss={() => setLogin(false)}>
-                <Login />
-            </Modal>
-            <ButtonContainer>
-                <LinkButton to="/ladder">Enter</LinkButton>
-                <Button onClick={() => setLogin(true)}>Login</Button>
-            </ButtonContainer>
         </MainContainer>
     );
 };
