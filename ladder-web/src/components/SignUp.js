@@ -1,18 +1,15 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useContext } from "react";
 import { withRouter } from "react-router-dom";
-import styled from "styled-components";
-import CreateUserMutation from "../mutations/CreateUserMutation";
-import LoginUserMutation from "../mutations/LoginUserMutation";
-import { ButtonBase, Button } from "./Button";
-import { AUTHTOKEN, USERID } from "../constants";
-import { usePersistedState } from "./Header";
-import { LoginSignUpContainer, StyledInput, Error } from "./LoginSignupCommon";
 
-const log = (id, token) => console.log(id, token);
+import CreateUserMutation from "../mutations/CreateUserMutation";
+
+import { Button } from "./Button";
+import {  USERID } from "../constants";
+import { LoginSignUpContainer, StyledInput, Error } from "./LoginSignupCommon";
+import { LoginContext } from "./context";
 
 const SignUp = props => {
-    const [token, setToken] = usePersistedState(AUTHTOKEN, "");
-    const [login, setLogin] = useState(true);
+    const tokenContext = useContext(LoginContext);
     const [name, setName] = useState("");
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
@@ -25,8 +22,10 @@ const SignUp = props => {
                 email,
                 password,
                 (id, token) => {
-                    log(id, token);
-                    localStorage.setItem(AUTHTOKEN, token);
+                    tokenContext.dispatch({
+                        type: "SAVE_TOKEN",
+                        payload: token
+                    });
                     localStorage.setItem(USERID, id);
                     props.history.push("/ladder");
                 },
@@ -35,7 +34,7 @@ const SignUp = props => {
                 }
             );
         },
-        [props.history]
+        [props.history, tokenContext]
     );
 
     return (

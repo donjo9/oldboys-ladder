@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import { Link, withRouter } from "react-router-dom";
 import styled from "styled-components";
-import { AUTHTOKEN } from "../constants";
 import { ButtonBase } from "./Button";
 import Modal from "./Modal";
 import Login from "./Login";
 import SignUp from "./SignUp";
+import { LoginContext } from "./context";
 
 const HeaderContainer = styled.div`
     display: flex;
@@ -57,30 +57,25 @@ const Button = styled.button`
     ${ButtonBase};
 `;
 
-const test = log => {
-    console.log(log);
-};
-
-export const usePersistedState = (key, defaultValue) => {
-    const [state, setState] = React.useState(
-        () => JSON.parse(localStorage.getItem(key)) || defaultValue
-    );
-    useEffect(() => {
-        localStorage.setItem(key, JSON.stringify(state));
-    }, [key, state]);
-    return [state, setState];
-};
+// export const usePersistedState = (key, defaultValue) => {
+//     const [state, setState] = React.useState(
+//         () => JSON.parse(localStorage.getItem(key)) || defaultValue
+//     );
+//     useEffect(() => {
+//         localStorage.setItem(key, JSON.stringify(state));
+//     }, [key, state]);
+//     return [state, setState];
+// };
 
 const Header = props => {
-    const [token] = usePersistedState(AUTHTOKEN, "");
+    const token = useContext(LoginContext);
     const [login, setLogin] = useState(false);
     const [signup, setsignup] = useState(false);
 
     return (
         <HeaderContainer>
-            <Modal visable={login} dismiss={() => setLogin(false)}>
-                <Login />
-            </Modal>
+            <Login show={login} hide={setLogin} />
+
             <Modal visable={signup} dismiss={() => setsignup(false)}>
                 <SignUp />
             </Modal>
@@ -90,7 +85,7 @@ const Header = props => {
 
             <NavBar>
                 <NavLink to="ladder">Ladder</NavLink>
-                {token !== "" ? <NavLink to="profile">Profile</NavLink> : null}
+                {token.token !== "" ? <NavLink to="profile">Profile</NavLink> : null}
             </NavBar>
             <ProfileContainer>
                 <Button type="button" onClick={() => setLogin(true)}>

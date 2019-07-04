@@ -6,6 +6,7 @@ import Main from "./components/Main";
 import Ladder from "./components/Ladder";
 import Profile from "./components/Profile";
 import Header from "./components/Header";
+import { LoginProvider } from "./components/context";
 
 const ContentContainer = styled.section`
     background-color: var(--background);
@@ -19,16 +20,18 @@ const ContentContainer = styled.section`
 function App() {
     return (
         <React.Fragment>
-            <Router>
-                <Header />
-                <ContentContainer>
-                    <Switch>
-                        <Route path="/" exact component={Main} />
-                        <Route path="/ladder" exact component={Ladder} />
-                        <Route path="/profile" exact component={Profile} />
-                    </Switch>
-                </ContentContainer>
-            </Router>
+            <LoginProvider>
+                <Router>
+                    <Header />
+                    <ContentContainer>
+                        <Switch>
+                            <Route path="/" exact component={Main} />
+                            <Route path="/ladder" exact component={Ladder} />
+                            <Route path="/profile" exact component={Profile} />
+                        </Switch>
+                    </ContentContainer>
+                </Router>
+            </LoginProvider>
         </React.Fragment>
     );
 }

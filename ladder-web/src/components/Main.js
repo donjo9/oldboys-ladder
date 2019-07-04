@@ -1,9 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
-import Login from "./Login";
-import { Link } from "react-router-dom";
-import { ButtonBase } from "./Button";
-import Modal from "./Modal";
+
 
 const MainContainer = styled.main`
     display: flex;
