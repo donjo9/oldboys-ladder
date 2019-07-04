@@ -36,7 +36,7 @@ const Login = props => {
     );
 
     return (
-        <Modal visable={props.login} dismiss={() => props.hide(false)}>
+        <Modal visable={props.show} dismiss={() => props.hide(false)}>
             <LoginSignUpContainer>
                 <StyledInput
                     type="text"

@@ -9,6 +9,7 @@ import { LoginContext } from "./context";
 
 const HeaderContainer = styled.div`
     display: flex;
+    flex-wrap: wrap;
     background-color: transparent;
     width: 100%;
     justify-content: space-around;
@@ -57,15 +58,6 @@ const Button = styled.button`
     ${ButtonBase};
 `;
 
-// export const usePersistedState = (key, defaultValue) => {
-//     const [state, setState] = React.useState(
-//         () => JSON.parse(localStorage.getItem(key)) || defaultValue
-//     );
-//     useEffect(() => {
-//         localStorage.setItem(key, JSON.stringify(state));
-//     }, [key, state]);
-//     return [state, setState];
-// };
 
 const Header = props => {
     const token = useContext(LoginContext);
