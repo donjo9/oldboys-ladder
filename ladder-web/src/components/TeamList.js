@@ -17,6 +17,9 @@ const TeamListHeader = styled.th`
     color: black;
     overflow: hidden;
     color: var(--border-hightlight);
+    &:nth-child(2) {
+        text-align: left;
+    }
 `;
 
 const TeamList = props => {
