@@ -1,17 +1,19 @@
 import styled, { css } from "styled-components";
+import {Link} from "react-router-dom";
 
 export const ButtonBase = css`
     background-color: transparent;
     border: 1px solid var(--button-border);
     color: white;
     border-radius: 23px;
-    font-size: 1.2rem;
     font-weight: 400;
     padding: 0.8rem 1.6rem;
     margin: 5px;
     text-decoration: none;
     line-height: 1.2rem;
     display: block;
+    font-size: 1rem;
+    text-align: center;
     cursor: pointer;
     &:hover,
     &:active {
@@ -24,6 +26,8 @@ export const ButtonBase = css`
 
 export const Button = styled.div`
     ${ButtonBase}
-    font-size: 1rem;
-    text-align: center;
 `;
+
+export const ButtonLink = styled(Link)`
+${ButtonBase}
+`

@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import { Link, withRouter } from "react-router-dom";
 import styled from "styled-components";
-import { ButtonBase } from "./Button";
+import { ButtonLink, Button } from "./Button";
 import Modal from "./Modal";
 import Login from "./Login";
 import SignUp from "./SignUp";
@@ -53,11 +53,6 @@ const ProfileContainer = styled.div`
     align-items: center;
     padding: 15px;
 `;
-
-const Button = styled.button`
-    ${ButtonBase};
-`;
-
 
 const Header = props => {
     const token = useContext(LoginContext);
