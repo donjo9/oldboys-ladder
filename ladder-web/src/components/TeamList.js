@@ -16,7 +16,7 @@ const TeamListHeader = styled.th`
     font-weight: bold;
     color: black;
     overflow: hidden;
-    color: var(--border-hightlight);
+    color: var(--common-highlight);
     &:nth-child(2) {
         text-align: left;
     }
@@ -50,7 +50,7 @@ const TeamList = props => {
                                 <TeamListHeader>Rank</TeamListHeader>
                                 <TeamListHeader>Team</TeamListHeader>
                                 <TeamListHeader>Point</TeamListHeader>
-                                <TeamListHeader>C</TeamListHeader>
+                                <TeamListHeader>Challenge</TeamListHeader>
                             </TeamListRow>
                         </thead>
 

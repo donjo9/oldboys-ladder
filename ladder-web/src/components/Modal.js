@@ -26,7 +26,7 @@ const ModalContentContainer = styled.div`
     flex-direction: column;
     justify-content: space-evenly;
     align-items: center;
-    box-shadow: 0 0 5px 0 var(--border-hightlight);
+    box-shadow: 0 0 5px 0 var(--common-highlight);
 `;
 
 const Modal = props => {

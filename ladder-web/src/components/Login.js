@@ -1,65 +1,81 @@
-import React, { useState, useCallback, useContext } from "react";
+import React, { useContext } from "react";
 import { withRouter } from "react-router-dom";
 import LoginUserMutation from "../mutations/LoginUserMutation";
 import { Button } from "./Button";
-import { USERID } from "../constants";
 
-import { LoginSignUpContainer, StyledInput, Error } from "./LoginSignupCommon";
+import { Formik } from "formik";
+
+import { LoginSignUpContainer, Error, StyledField } from "./LoginSignupCommon";
 import Modal from "./Modal";
 import { LoginContext } from "./context";
 
 const Login = props => {
+    const { show, dismiss, history } = props;
     const tokenContext = useContext(LoginContext);
-    const [password, setPassword] = useState("");
-    const [email, setEmail] = useState("");
-    const [error, setError] = useState("");
-    const _submitLoginUser = useCallback(
-        (email, password) => {
-            LoginUserMutation(
-                email,
-                password,
-                (id, token) => {
-                    tokenContext.dispatch({
-                        type: "SAVE_TOKEN",
-                        payload: token
-                    });
-                    localStorage.setItem(USERID, id);
-                    props.history.push("/ladder");
-                    props.dismiss();
-                },
-                err => {
-                    setError(err.source.errors[0].message);
-                }
-            );
-        },
-        [props, tokenContext]
-    );
-
     return (
-        <Modal visable={props.show} dismiss={props.dismiss}>
-            <LoginSignUpContainer>
-                <StyledInput
-                    type="text"
-                    value={email}
-                    placeholder="Email"
-                    name="username"
-                    onChange={e => setEmail(e.target.value)}
-                />
-                <StyledInput
-                    type="password"
-                    placeholder="Password"
-                    value={password}
-                    onChange={e => setPassword(e.target.value)}
-                />
-                <Error>{error}</Error>
-                <Button
-                    onClick={() => {
-                        _submitLoginUser(email, password);
-                    }}
-                >
-                    Login
-                </Button>
-            </LoginSignUpContainer>
+        <Modal visable={show} dismiss={dismiss}>
+            <Formik
+                initialValues={{ username: "", password: "" }}
+                onSubmit={(values, actions) => {
+                    LoginUserMutation(
+                        values.username,
+                        values.password,
+                        (id, token) => {
+                            tokenContext.dispatch({
+                                type: "SAVE_TOKEN",
+                                payload: token
+                            });
+                            dismiss();
+                            history.push("/ladder");
+                        },
+                        err => {
+                            actions.setStatus({
+                                msg: err.source.errors[0].message
+                            });
+                            actions.setSubmitting(false);
+                        }
+                    );
+                }}
+                render={({
+                    values,
+                    status,
+                    errors,
+                    touched,
+                    isSubmitting,
+                    handleSubmit,
+                    handleChange
+                }) => (
+                    <LoginSignUpContainer
+                        onSubmit={handleSubmit}
+                        onKeyDown={e => {
+                            if (e.key === "Escape") {
+                                dismiss();
+                            }
+                        }}
+                    >
+                        <StyledField
+                            type="text"
+                            placeholder="Email"
+                            name="username"
+                        />
+                        {errors.username && touched.username && (
+                            <Error>{errors.email}</Error>
+                        )}
+                        <StyledField
+                            type="password"
+                            placeholder="Password"
+                            name="password"
+                        />
+                        {errors.password && touched.password && (
+                            <Error>{errors.password}</Error>
+                        )}
+                        {status && status.msg && <Error>{status.msg}</Error>}
+                        <Button type="submit" disabled={isSubmitting}>
+                            Login
+                        </Button>
+                    </LoginSignUpContainer>
+                )}
+            />
         </Modal>
     );
 };

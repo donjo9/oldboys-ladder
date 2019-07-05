@@ -17,14 +17,14 @@ export const ButtonBase = css`
     cursor: pointer;
     &:hover,
     &:active {
-        background-color: var(--border-hightlight);
-        border: 1px solid var(--border-hightlight);
+        background-color: var(--common-highlight);
+        border: 1px solid var(--common-highlight);
         color: black;
         transition: background-color 250ms ease-in, color 250ms ease-in;
     }
 `;
 
-export const Button = styled.div`
+export const Button = styled.button`
     ${ButtonBase}
 `;
 

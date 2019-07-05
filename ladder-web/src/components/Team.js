@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import graphql from "babel-plugin-relay/macro";
 import { createFragmentContainer } from "react-relay";
+import { AK47 } from "./ak47";
 
 const TeamListRow = styled.tr`
     td {
@@ -30,7 +31,9 @@ const Team = props => {
                 <div />
                 {team.points}
             </td>
-            <td>X</td>
+            <td>
+                <AK47 style={{ fill: "var(--input-highlight)" }} />
+            </td>
         </TeamListRow>
     );
 };

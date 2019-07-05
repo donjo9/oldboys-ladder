@@ -43,7 +43,7 @@ const NavLink = styled(Link)`
     color: white;
     border-bottom: 1px solid white;
     &:hover {
-        border-bottom: 1px solid var(--border-hightlight);
+        border-bottom: 1px solid var(--common-highlight);
         transition: border-bottom 250ms ease-in;
     }
 `;
