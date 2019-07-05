@@ -7,13 +7,16 @@ import environment from "../Environment";
 
 const TeamListContainer = styled.table`
     margin: 0 auto;
-    min-width: 400px;
+    width: 100%;
+    table-layout: fixed;
 `;
 
 const TeamListHeader = styled.th`
     font-size: 1rem;
     font-weight: bold;
     color: black;
+    overflow: hidden;
+    color: var(--border-hightlight);
 `;
 
 const TeamList = props => {
@@ -41,9 +44,10 @@ const TeamList = props => {
                     <TeamListContainer>
                         <thead>
                             <TeamListRow>
-                                <TeamListHeader>Name</TeamListHeader>
-                                <TeamListHeader>Point</TeamListHeader>
                                 <TeamListHeader>Rank</TeamListHeader>
+                                <TeamListHeader>Team</TeamListHeader>
+                                <TeamListHeader>Point</TeamListHeader>
+                                <TeamListHeader>C</TeamListHeader>
                             </TeamListRow>
                         </thead>
 
@@ -53,7 +57,7 @@ const TeamList = props => {
                                     <Team
                                         key={team.id}
                                         team={team}
-                                        rank={index+1}
+                                        rank={index + 1}
                                     />
                                 );
                             })}
