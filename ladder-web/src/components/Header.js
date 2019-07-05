@@ -55,13 +55,13 @@ const ProfileContainer = styled.div`
 `;
 
 const Header = props => {
-    const token = useContext(LoginContext);
+    const { state, dispatch } = useContext(LoginContext);
     const [login, setLogin] = useState(false);
     const [signup, setsignup] = useState(false);
 
     return (
         <HeaderContainer>
-            <Login show={login} hide={setLogin} />
+            <Login show={login} dismiss={() => setLogin(false)} />
 
             <Modal visable={signup} dismiss={() => setsignup(false)}>
                 <SignUp />
@@ -72,15 +72,28 @@ const Header = props => {
 
             <NavBar>
                 <NavLink to="ladder">Ladder</NavLink>
-                {token.token !== "" ? <NavLink to="profile">Profile</NavLink> : null}
             </NavBar>
             <ProfileContainer>
-                <Button type="button" onClick={() => setLogin(true)}>
-                    Login
-                </Button>
-                <Button type="button" onClick={() => setsignup(true)}>
-                    Signup
-                </Button>
+                {state.token ? (
+                    <React.Fragment>
+                        <Button
+                            type="button"
+                            onClick={() => dispatch({ type: "LOGOUT" })}
+                        >
+                            Logout
+                        </Button>
+                        <ButtonLink to="profile">Profile</ButtonLink>
+                    </React.Fragment>
+                ) : (
+                    <React.Fragment>
+                        <Button type="button" onClick={() => setLogin(true)}>
+                            Login
+                        </Button>
+                        <Button type="button" onClick={() => setsignup(true)}>
+                            Signup
+                        </Button>
+                    </React.Fragment>
+                )}
             </ProfileContainer>
         </HeaderContainer>
     );

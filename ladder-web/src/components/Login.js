@@ -9,7 +9,6 @@ import Modal from "./Modal";
 import { LoginContext } from "./context";
 
 const Login = props => {
-    //const [token, setToken] = usePersistedState(AUTHTOKEN, "");
     const tokenContext = useContext(LoginContext);
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
@@ -26,17 +25,18 @@ const Login = props => {
                     });
                     localStorage.setItem(USERID, id);
                     props.history.push("/ladder");
+                    props.dismiss();
                 },
                 err => {
                     setError(err.source.errors[0].message);
                 }
             );
         },
-        [props.history, tokenContext]
+        [props, tokenContext]
     );
 
     return (
-        <Modal visable={props.show} dismiss={() => props.hide(false)}>
+        <Modal visable={props.show} dismiss={props.dismiss}>
             <LoginSignUpContainer>
                 <StyledInput
                     type="text"
@@ -54,9 +54,7 @@ const Login = props => {
                 <Error>{error}</Error>
                 <Button
                     onClick={() => {
-                        if (_submitLoginUser(email, password)) {
-                            props.history.push("/ladder");
-                        }
+                        _submitLoginUser(email, password);
                     }}
                 >
                     Login
