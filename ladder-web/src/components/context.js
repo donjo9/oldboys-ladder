@@ -8,11 +8,15 @@ let initialState = {
 };
 
 function reducer(state, action) {
+    let { token } = state;
     switch (action.type) {
         case "SAVE_TOKEN":
-            let { token } = state;
             token = action.payload;
             localStorage.setItem(AUTHTOKEN, token);
+            return { token };
+        case "LOGOUT":
+                token = null;
+                localStorage.removeItem(AUTHTOKEN);
             return { token };
         default:
             return state;
