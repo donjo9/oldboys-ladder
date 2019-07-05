@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import graphql from "babel-plugin-relay/macro";
 import { QueryRenderer } from "react-relay";
-import Team, { TeamListRow } from "./Team";
+import TeamListItem, { TeamListRow } from "./TeamListItem";
 import environment from "../Environment";
 
 const TeamListContainer = styled.table`
@@ -30,7 +30,7 @@ const TeamList = props => {
                 query TeamListQuery {
                     teams {
                         id
-                        ...Team_team
+                        ...TeamListItem_team
                     }
                 }
             `}
@@ -57,7 +57,7 @@ const TeamList = props => {
                         <tbody>
                             {props.teams.map((team, index) => {
                                 return (
-                                    <Team
+                                    <TeamListItem
                                         key={team.id}
                                         team={team}
                                         rank={index + 1}

@@ -1,50 +1,42 @@
 import React from "react";
-import styled from "styled-components";
 import graphql from "babel-plugin-relay/macro";
 import { createFragmentContainer } from "react-relay";
-import { AK47 } from "./ak47";
 
-const TeamListRow = styled.tr`
-    td {
-        text-align: center;
-    }
-    td:nth-child(2) {
-        text-align: left;
-        div {
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-    }
-`;
+import CreateTeam from "./CreateTeam";
 
 const Team = props => {
-    const { team, rank } = props;
-    console.log(team);
+    const {
+        team: { team, ownTeam }
+    } = props;
+
     return (
-        <TeamListRow>
-            <td>{rank}</td>
-            <td>
-                <div>{team.name}</div>
-            </td>
-            <td>
-                <div />
-                {team.points}
-            </td>
-            <td>
-                <AK47 style={{ fill: "var(--input-highlight)" }} />
-            </td>
-        </TeamListRow>
+        <React.Fragment>
+            {ownTeam ? (
+                <div>Eget hold: {ownTeam.team.name}</div>
+            ) : team ? (
+                <div>Du er på holdet: {team.name}</div>
+            ) : (
+                <React.Fragment>
+                    <div>Du er ikke på noget hold</div>
+                    <CreateTeam />
+                </React.Fragment>
+            )}
+        </React.Fragment>
     );
 };
 
-export { TeamListRow };
-
 export default createFragmentContainer(Team, {
     team: graphql`
-        fragment Team_team on Team {
-            name
-            points
+        fragment Team_team on User {
+            team {
+                name
+            }
+            ownTeam {
+                team {
+                    name
+                    id
+                }
+            }
         }
     `
 });

@@ -4,6 +4,7 @@ import { QueryRenderer } from "react-relay";
 import { Redirect } from "react-router-dom";
 import environment from "../Environment";
 import { LoginContext } from "./context";
+import Team from "./Team";
 
 const Profile = props => {
     const { state } = useContext(LoginContext);
@@ -15,8 +16,10 @@ const Profile = props => {
                     query={graphql`
                         query ProfileQuery {
                             me {
+                                id
                                 name
                                 email
+                                ...Team_team
                             }
                         }
                     `}
@@ -29,10 +32,12 @@ const Profile = props => {
                         if (!props) {
                             return <div>Loading...</div>;
                         }
+                        const { me } = props;
                         return (
                             <div>
                                 <div>{props.me.name}</div>
                                 <div>{props.me.email}</div>
+                                <Team team={me} />
                             </div>
                         );
                     }}

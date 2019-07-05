@@ -12,7 +12,7 @@ type User {
 
 type TeamOwner {
     id: ID! @id
-    user: User! @relation(name: "UserToTeamOwner", onDelete: CASCADE)
+    user: User! @relation(name: "UserToTeamOwner", onDelete: SET_NULL)
     team: Team!
         @relation(name: "TeamOwnerToTeam", onDelete: CASCADE, link: INLINE)
 }
@@ -23,7 +23,7 @@ type Team {
     shortname: String!
     updatedAt: DateTime! @updatedAt
     createdAt: DateTime! @createdAt
-    owner: TeamOwner! @relation(name: "TeamOwnerToTeam", onDelete: SET_NULL)
+    owner: TeamOwner! @relation(name: "TeamOwnerToTeam", onDelete: CASCADE)
     players: [User!]!
         @relation(name: "TeamToUser", onDelete: SET_NULL, link: TABLE)
     points: Int! @default(value: 1000)
