@@ -12,7 +12,7 @@ const ContentContainer = styled.section`
     background-color: var(--background);
     flex-grow: 1;
     width: 100%;
-    max-width: 700px;
+    max-width: 960px;
     align-self: center;
     padding: 15px;
 `;
