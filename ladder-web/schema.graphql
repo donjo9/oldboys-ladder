@@ -1,5 +1,5 @@
 # source: http://localhost:4000
-# timestamp: Sat Jul 06 2019 22:55:34 GMT+0200 (GMT+02:00)
+# timestamp: Sun Jul 07 2019 00:13:08 GMT+0200 (GMT+02:00)
 
 type AuthPayload {
   token: String!
@@ -9,6 +9,11 @@ type AuthPayload {
 input CreateTeamInput {
   name: String!
   shortname: String!
+}
+
+input CreateTeamInviteInput {
+  playercode: String!
+  teamid: String!
 }
 
 input CreateUserInput {
@@ -27,6 +32,7 @@ input LoginUserInput {
 type Mutation {
   createUser(data: CreateUserInput!): AuthPayload!
   createTeam(data: CreateTeamInput!): Team!
+  createTeamInvitation(data: CreateTeamInviteInput!): TeamInvitation!
   deleteUser: User!
   updateUser(data: UpdateUserInput!): User!
   login(data: LoginUserInput!): AuthPayload!
@@ -57,6 +63,12 @@ type Team {
   points: Int!
 }
 
+type TeamInvitation {
+  id: ID!
+  player: User!
+  team: Team!
+}
+
 type TeamOwner {
   id: ID!
   user: User!
@@ -76,6 +88,7 @@ type User {
   email: String
   playercode: String
   team: Team
+  invitation: [TeamInvitation!]!
   ownTeam: TeamOwner
   updatedAt: String!
   createdAt: String!

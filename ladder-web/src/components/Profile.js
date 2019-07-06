@@ -5,7 +5,7 @@ import { Redirect } from "react-router-dom";
 import environment from "../Environment";
 import { LoginContext } from "./context";
 import Team from "./Team";
-
+import TeamInvitaitons from "./TeamInvitaitons";
 
 const Profile = props => {
     const { state } = useContext(LoginContext);
@@ -21,6 +21,7 @@ const Profile = props => {
                                 name
                                 email
                                 playercode
+                                ...TeamInvitaitons_teaminvitation
                                 ...Team_team
                             }
                         }
@@ -41,6 +42,7 @@ const Profile = props => {
                                 <div>{props.me.email}</div>
                                 <div>Spiller kode: {props.me.playercode}</div>
                                 <Team team={me} />
+                                <TeamInvitaitons teaminvitation={me} />
                             </div>
                         );
                     }}

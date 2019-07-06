@@ -39,7 +39,6 @@ const TeamRow = styled(Link)`
 
 const TeamListItem = props => {
     const { team, rank } = props;
-    console.log(team.teamcode);
     return (
         <TeamRow to={`/team/${team.teamcode}`}>
             <div>{rank}</div>

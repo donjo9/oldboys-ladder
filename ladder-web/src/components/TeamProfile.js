@@ -1,5 +1,5 @@
 import React from "react";
-//import styled from "styled-components";
+
 import graphql from "babel-plugin-relay/macro";
 import { QueryRenderer } from "react-relay";
 import environment from "../Environment";
@@ -8,7 +8,7 @@ const TeamProfile = props => {
     const {
         match: { params }
     } = props;
-    console.log(params);
+
     return (
         <QueryRenderer
             environment={environment}

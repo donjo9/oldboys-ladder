@@ -9,7 +9,7 @@ import Crown from "./crown.js";
 const TeamLink = styled(Link)`
     color: white;
     text-decoration: none;
-`
+`;
 
 const Team = props => {
     const {
