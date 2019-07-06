@@ -82,7 +82,7 @@ const Header = props => {
                         >
                             Logout
                         </Button>
-                        <ButtonLink to="profile">Profile</ButtonLink>
+                        <ButtonLink to="/profile">Profile</ButtonLink>
                     </React.Fragment>
                 ) : (
                     <React.Fragment>
