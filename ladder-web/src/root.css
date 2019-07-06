@@ -1,5 +1,8 @@
 :root {
     --background: #24232c;
+    --teamlist-odd-background: #2b2935;
+    --teamlist-even-background: #393742;
+    --teamlist-hover: #33323a;
     --button-background: #3d702a;
     --button-border: #ffffff;
     --common-highlight: #e4ac44;

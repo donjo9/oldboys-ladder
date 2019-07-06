@@ -5,13 +5,19 @@ import { QueryRenderer } from "react-relay";
 import TeamListItem, { TeamListRow } from "./TeamListItem";
 import environment from "../Environment";
 
-const TeamListContainer = styled.table`
+const TeamListContainer = styled.div`
+    display: grid;
+    grid-template-columns: 1fr 3fr 1fr 1fr;
     margin: 0 auto;
     width: 100%;
     table-layout: fixed;
+    text-align: center;
+    &:nth-child(2) {
+        text-align: left;
+    }
 `;
 
-const TeamListHeader = styled.th`
+const TeamListHeader = styled.div`
     font-size: 1rem;
     font-weight: bold;
     color: black;
@@ -29,7 +35,7 @@ const TeamList = props => {
             query={graphql`
                 query TeamListQuery {
                     teams {
-                        id
+                        teamcode
                         ...TeamListItem_team
                     }
                 }
@@ -44,28 +50,24 @@ const TeamList = props => {
                     return <div>Loading...</div>;
                 }
                 return (
-                    <TeamListContainer>
-                        <thead>
-                            <TeamListRow>
-                                <TeamListHeader>Rank</TeamListHeader>
-                                <TeamListHeader>Team</TeamListHeader>
-                                <TeamListHeader>Point</TeamListHeader>
-                                <TeamListHeader>Challenge</TeamListHeader>
-                            </TeamListRow>
-                        </thead>
+                    <React.Fragment>
+                        <TeamListContainer>
+                            <TeamListHeader>Rank</TeamListHeader>
+                            <TeamListHeader>Team</TeamListHeader>
+                            <TeamListHeader>Point</TeamListHeader>
+                            <TeamListHeader>Challenge</TeamListHeader>
+                        </TeamListContainer>
 
-                        <tbody>
-                            {props.teams.map((team, index) => {
-                                return (
-                                    <TeamListItem
-                                        key={team.id}
-                                        team={team}
-                                        rank={index + 1}
-                                    />
-                                );
-                            })}
-                        </tbody>
-                    </TeamListContainer>
+                        {props.teams.map((team, index) => {
+                            return (
+                                <TeamListItem
+                                    key={team.teamcode}
+                                    team={team}
+                                    rank={index + 1}
+                                />
+                            );
+                        })}
+                    </React.Fragment>
                 );
             }}
         />

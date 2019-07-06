@@ -8,14 +8,12 @@ export const AK47 = props => (
         viewBox="0 0 88.5 32"
         className={props.className}
         style={props.style}
-        width="30px"
-        height="30px"
+        width="2rem"
+        height="2rem"
     >
         <path
-		
             fillRule="evenodd"
             clipRule="evenodd"
-
             d="M86.469,4.433V8.46l1.417,0.149
 				c0.099,0.199,0.186,0.399,0.261,0.597c0.099,0.151,0.162,0.298,0.187,0.448c0,0.123-0.063,0.248-0.187,0.374
 				c-0.149,0.148-0.361,0.223-0.635,0.223c-0.125,0-0.261-0.038-0.41-0.111h-0.448l-0.634,1.118l-1.194-0.485H74.791l-0.521,0.635

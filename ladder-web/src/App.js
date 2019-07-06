@@ -7,6 +7,7 @@ import Ladder from "./components/Ladder";
 import Profile from "./components/Profile";
 import Header from "./components/Header";
 import { LoginProvider } from "./components/context";
+import TeamProfile from "./components/TeamProfile";
 
 const ContentContainer = styled.section`
     background-color: var(--background);
@@ -28,6 +29,11 @@ function App() {
                             <Route path="/" exact component={Main} />
                             <Route path="/ladder" exact component={Ladder} />
                             <Route path="/profile" exact component={Profile} />
+                            <Route
+                                path="/team/:id"
+                                exact
+                                component={TeamProfile}
+                            />
                         </Switch>
                     </ContentContainer>
                 </Router>

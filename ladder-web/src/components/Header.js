@@ -71,7 +71,7 @@ const Header = props => {
             </HeadLine>
 
             <NavBar>
-                <NavLink to="ladder">Ladder</NavLink>
+                <NavLink to="/ladder">Ladder</NavLink>
             </NavBar>
             <ProfileContainer>
                 {state.token ? (
