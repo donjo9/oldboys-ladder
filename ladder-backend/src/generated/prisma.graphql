@@ -472,6 +472,7 @@ type User {
   id: ID!
   name: String!
   email: String!
+  playercode: String
   password: String!
   updatedAt: DateTime!
   createdAt: DateTime!
@@ -489,6 +490,7 @@ input UserCreateInput {
   id: ID
   name: String!
   email: String!
+  playercode: String
   password: String!
   ownTeam: TeamOwnerCreateOneWithoutUserInput
   team: TeamCreateOneWithoutPlayersInput
@@ -508,6 +510,7 @@ input UserCreateWithoutOwnTeamInput {
   id: ID
   name: String!
   email: String!
+  playercode: String
   password: String!
   team: TeamCreateOneWithoutPlayersInput
 }
@@ -516,6 +519,7 @@ input UserCreateWithoutTeamInput {
   id: ID
   name: String!
   email: String!
+  playercode: String
   password: String!
   ownTeam: TeamOwnerCreateOneWithoutUserInput
 }
@@ -532,6 +536,8 @@ enum UserOrderByInput {
   name_DESC
   email_ASC
   email_DESC
+  playercode_ASC
+  playercode_DESC
   password_ASC
   password_DESC
   updatedAt_ASC
@@ -544,6 +550,7 @@ type UserPreviousValues {
   id: ID!
   name: String!
   email: String!
+  playercode: String
   password: String!
   updatedAt: DateTime!
   createdAt: DateTime!
@@ -592,6 +599,20 @@ input UserScalarWhereInput {
   email_not_starts_with: String
   email_ends_with: String
   email_not_ends_with: String
+  playercode: String
+  playercode_not: String
+  playercode_in: [String!]
+  playercode_not_in: [String!]
+  playercode_lt: String
+  playercode_lte: String
+  playercode_gt: String
+  playercode_gte: String
+  playercode_contains: String
+  playercode_not_contains: String
+  playercode_starts_with: String
+  playercode_not_starts_with: String
+  playercode_ends_with: String
+  playercode_not_ends_with: String
   password: String
   password_not: String
   password_in: [String!]
@@ -648,6 +669,7 @@ input UserSubscriptionWhereInput {
 input UserUpdateInput {
   name: String
   email: String
+  playercode: String
   password: String
   ownTeam: TeamOwnerUpdateOneWithoutUserInput
   team: TeamUpdateOneWithoutPlayersInput
@@ -656,12 +678,14 @@ input UserUpdateInput {
 input UserUpdateManyDataInput {
   name: String
   email: String
+  playercode: String
   password: String
 }
 
 input UserUpdateManyMutationInput {
   name: String
   email: String
+  playercode: String
   password: String
 }
 
@@ -692,6 +716,7 @@ input UserUpdateOneRequiredWithoutOwnTeamInput {
 input UserUpdateWithoutOwnTeamDataInput {
   name: String
   email: String
+  playercode: String
   password: String
   team: TeamUpdateOneWithoutPlayersInput
 }
@@ -699,6 +724,7 @@ input UserUpdateWithoutOwnTeamDataInput {
 input UserUpdateWithoutTeamDataInput {
   name: String
   email: String
+  playercode: String
   password: String
   ownTeam: TeamOwnerUpdateOneWithoutUserInput
 }
@@ -762,6 +788,20 @@ input UserWhereInput {
   email_not_starts_with: String
   email_ends_with: String
   email_not_ends_with: String
+  playercode: String
+  playercode_not: String
+  playercode_in: [String!]
+  playercode_not_in: [String!]
+  playercode_lt: String
+  playercode_lte: String
+  playercode_gt: String
+  playercode_gte: String
+  playercode_contains: String
+  playercode_not_contains: String
+  playercode_starts_with: String
+  playercode_not_starts_with: String
+  playercode_ends_with: String
+  playercode_not_ends_with: String
   password: String
   password_not: String
   password_in: [String!]
@@ -802,4 +842,5 @@ input UserWhereInput {
 input UserWhereUniqueInput {
   id: ID
   email: String
+  playercode: String
 }

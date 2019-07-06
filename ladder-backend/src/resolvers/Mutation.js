@@ -14,6 +14,7 @@ const Mutation = {
         const user = await prisma.mutation.createUser({
             data: {
                 ...args.data,
+                playercode: generate("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz", 10),
                 password
             }
         });
