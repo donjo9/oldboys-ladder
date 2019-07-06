@@ -2,6 +2,7 @@
 
 type Query {
     teams: [Team!]!
+    team(id: String): Team
     users(
         query: String
         first: Int

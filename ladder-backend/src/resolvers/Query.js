@@ -20,6 +20,15 @@ const Query = {
         }
         return prisma.query.users(opArgs, info);
     },
+    team(parent, args, { prisma }, info) {
+        const opArgs = {};
+        if (args.id) {
+            opArgs.where = {
+                id: args.id
+            };
+        }
+        return prisma.query.team(opArgs, info);
+    },
     teams(parent, args, { prisma }, info) {
         const opArgs = {};
         return prisma.query.teams(opArgs, info);
