@@ -9,6 +9,12 @@ type User {
     ownTeam: TeamOwner
         @relation(name: "UserToTeamOwner", onDelete: CASCADE, link: INLINE)
     team: Team @relation(name: "TeamToUser", onDelete: SET_NULL)
+    invitation: [TeamInvitation!]!
+        @relation(
+            name: "PlayerToTeamInvitation"
+            onDelete: CASCADE
+            link: TABLE
+        )
 }
 
 type TeamOwner {
@@ -29,10 +35,18 @@ type Team {
     players: [User!]!
         @relation(name: "TeamToUser", onDelete: SET_NULL, link: TABLE)
     points: Int! @default(value: 1000)
+    playerinvitations: [TeamInvitation!]!
+        @relation(name: "TeamToTeamInvitation", onDelete: CASCADE)
 }
 
 enum TeamRole {
     OWNER
     ADMIN
     PLAYER
+}
+
+type TeamInvitation {
+    id: ID! @id
+    player: User! @relation(name: "PlayerToTeamInvitation", onDelete: SET_NULL)
+    team: Team! @relation(name: "TeamToTeamInvitation", onDelete: SET_NULL)
 }

@@ -2,6 +2,10 @@ type AggregateTeam {
   count: Int!
 }
 
+type AggregateTeamInvitation {
+  count: Int!
+}
+
 type AggregateTeamOwner {
   count: Int!
 }
@@ -25,6 +29,11 @@ type Mutation {
   upsertTeam(where: TeamWhereUniqueInput!, create: TeamCreateInput!, update: TeamUpdateInput!): Team!
   deleteTeam(where: TeamWhereUniqueInput!): Team
   deleteManyTeams(where: TeamWhereInput): BatchPayload!
+  createTeamInvitation(data: TeamInvitationCreateInput!): TeamInvitation!
+  updateTeamInvitation(data: TeamInvitationUpdateInput!, where: TeamInvitationWhereUniqueInput!): TeamInvitation
+  upsertTeamInvitation(where: TeamInvitationWhereUniqueInput!, create: TeamInvitationCreateInput!, update: TeamInvitationUpdateInput!): TeamInvitation!
+  deleteTeamInvitation(where: TeamInvitationWhereUniqueInput!): TeamInvitation
+  deleteManyTeamInvitations(where: TeamInvitationWhereInput): BatchPayload!
   createTeamOwner(data: TeamOwnerCreateInput!): TeamOwner!
   updateTeamOwner(data: TeamOwnerUpdateInput!, where: TeamOwnerWhereUniqueInput!): TeamOwner
   upsertTeamOwner(where: TeamOwnerWhereUniqueInput!, create: TeamOwnerCreateInput!, update: TeamOwnerUpdateInput!): TeamOwner!
@@ -59,6 +68,9 @@ type Query {
   team(where: TeamWhereUniqueInput!): Team
   teams(where: TeamWhereInput, orderBy: TeamOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Team]!
   teamsConnection(where: TeamWhereInput, orderBy: TeamOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): TeamConnection!
+  teamInvitation(where: TeamInvitationWhereUniqueInput!): TeamInvitation
+  teamInvitations(where: TeamInvitationWhereInput, orderBy: TeamInvitationOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [TeamInvitation]!
+  teamInvitationsConnection(where: TeamInvitationWhereInput, orderBy: TeamInvitationOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): TeamInvitationConnection!
   teamOwner(where: TeamOwnerWhereUniqueInput!): TeamOwner
   teamOwners(where: TeamOwnerWhereInput, orderBy: TeamOwnerOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [TeamOwner]!
   teamOwnersConnection(where: TeamOwnerWhereInput, orderBy: TeamOwnerOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): TeamOwnerConnection!
@@ -70,6 +82,7 @@ type Query {
 
 type Subscription {
   team(where: TeamSubscriptionWhereInput): TeamSubscriptionPayload
+  teamInvitation(where: TeamInvitationSubscriptionWhereInput): TeamInvitationSubscriptionPayload
   teamOwner(where: TeamOwnerSubscriptionWhereInput): TeamOwnerSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
 }
@@ -84,6 +97,7 @@ type Team {
   owner: TeamOwner!
   players(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User!]
   points: Int!
+  playerinvitations(where: TeamInvitationWhereInput, orderBy: TeamInvitationOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [TeamInvitation!]
 }
 
 type TeamConnection {
@@ -100,10 +114,16 @@ input TeamCreateInput {
   owner: TeamOwnerCreateOneWithoutTeamInput!
   players: UserCreateManyWithoutTeamInput
   points: Int
+  playerinvitations: TeamInvitationCreateManyWithoutTeamInput
 }
 
 input TeamCreateOneWithoutOwnerInput {
   create: TeamCreateWithoutOwnerInput
+  connect: TeamWhereUniqueInput
+}
+
+input TeamCreateOneWithoutPlayerinvitationsInput {
+  create: TeamCreateWithoutPlayerinvitationsInput
   connect: TeamWhereUniqueInput
 }
 
@@ -119,6 +139,17 @@ input TeamCreateWithoutOwnerInput {
   teamcode: String!
   players: UserCreateManyWithoutTeamInput
   points: Int
+  playerinvitations: TeamInvitationCreateManyWithoutTeamInput
+}
+
+input TeamCreateWithoutPlayerinvitationsInput {
+  id: ID
+  name: String!
+  shortname: String!
+  teamcode: String!
+  owner: TeamOwnerCreateOneWithoutTeamInput!
+  players: UserCreateManyWithoutTeamInput
+  points: Int
 }
 
 input TeamCreateWithoutPlayersInput {
@@ -128,11 +159,185 @@ input TeamCreateWithoutPlayersInput {
   teamcode: String!
   owner: TeamOwnerCreateOneWithoutTeamInput!
   points: Int
+  playerinvitations: TeamInvitationCreateManyWithoutTeamInput
 }
 
 type TeamEdge {
   node: Team!
   cursor: String!
+}
+
+type TeamInvitation {
+  id: ID!
+  player: User!
+  team: Team!
+}
+
+type TeamInvitationConnection {
+  pageInfo: PageInfo!
+  edges: [TeamInvitationEdge]!
+  aggregate: AggregateTeamInvitation!
+}
+
+input TeamInvitationCreateInput {
+  id: ID
+  player: UserCreateOneWithoutInvitationInput!
+  team: TeamCreateOneWithoutPlayerinvitationsInput!
+}
+
+input TeamInvitationCreateManyWithoutPlayerInput {
+  create: [TeamInvitationCreateWithoutPlayerInput!]
+  connect: [TeamInvitationWhereUniqueInput!]
+}
+
+input TeamInvitationCreateManyWithoutTeamInput {
+  create: [TeamInvitationCreateWithoutTeamInput!]
+  connect: [TeamInvitationWhereUniqueInput!]
+}
+
+input TeamInvitationCreateWithoutPlayerInput {
+  id: ID
+  team: TeamCreateOneWithoutPlayerinvitationsInput!
+}
+
+input TeamInvitationCreateWithoutTeamInput {
+  id: ID
+  player: UserCreateOneWithoutInvitationInput!
+}
+
+type TeamInvitationEdge {
+  node: TeamInvitation!
+  cursor: String!
+}
+
+enum TeamInvitationOrderByInput {
+  id_ASC
+  id_DESC
+}
+
+type TeamInvitationPreviousValues {
+  id: ID!
+}
+
+input TeamInvitationScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  AND: [TeamInvitationScalarWhereInput!]
+  OR: [TeamInvitationScalarWhereInput!]
+  NOT: [TeamInvitationScalarWhereInput!]
+}
+
+type TeamInvitationSubscriptionPayload {
+  mutation: MutationType!
+  node: TeamInvitation
+  updatedFields: [String!]
+  previousValues: TeamInvitationPreviousValues
+}
+
+input TeamInvitationSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: TeamInvitationWhereInput
+  AND: [TeamInvitationSubscriptionWhereInput!]
+  OR: [TeamInvitationSubscriptionWhereInput!]
+  NOT: [TeamInvitationSubscriptionWhereInput!]
+}
+
+input TeamInvitationUpdateInput {
+  player: UserUpdateOneRequiredWithoutInvitationInput
+  team: TeamUpdateOneRequiredWithoutPlayerinvitationsInput
+}
+
+input TeamInvitationUpdateManyWithoutPlayerInput {
+  create: [TeamInvitationCreateWithoutPlayerInput!]
+  delete: [TeamInvitationWhereUniqueInput!]
+  connect: [TeamInvitationWhereUniqueInput!]
+  set: [TeamInvitationWhereUniqueInput!]
+  disconnect: [TeamInvitationWhereUniqueInput!]
+  update: [TeamInvitationUpdateWithWhereUniqueWithoutPlayerInput!]
+  upsert: [TeamInvitationUpsertWithWhereUniqueWithoutPlayerInput!]
+  deleteMany: [TeamInvitationScalarWhereInput!]
+}
+
+input TeamInvitationUpdateManyWithoutTeamInput {
+  create: [TeamInvitationCreateWithoutTeamInput!]
+  delete: [TeamInvitationWhereUniqueInput!]
+  connect: [TeamInvitationWhereUniqueInput!]
+  set: [TeamInvitationWhereUniqueInput!]
+  disconnect: [TeamInvitationWhereUniqueInput!]
+  update: [TeamInvitationUpdateWithWhereUniqueWithoutTeamInput!]
+  upsert: [TeamInvitationUpsertWithWhereUniqueWithoutTeamInput!]
+  deleteMany: [TeamInvitationScalarWhereInput!]
+}
+
+input TeamInvitationUpdateWithoutPlayerDataInput {
+  team: TeamUpdateOneRequiredWithoutPlayerinvitationsInput
+}
+
+input TeamInvitationUpdateWithoutTeamDataInput {
+  player: UserUpdateOneRequiredWithoutInvitationInput
+}
+
+input TeamInvitationUpdateWithWhereUniqueWithoutPlayerInput {
+  where: TeamInvitationWhereUniqueInput!
+  data: TeamInvitationUpdateWithoutPlayerDataInput!
+}
+
+input TeamInvitationUpdateWithWhereUniqueWithoutTeamInput {
+  where: TeamInvitationWhereUniqueInput!
+  data: TeamInvitationUpdateWithoutTeamDataInput!
+}
+
+input TeamInvitationUpsertWithWhereUniqueWithoutPlayerInput {
+  where: TeamInvitationWhereUniqueInput!
+  update: TeamInvitationUpdateWithoutPlayerDataInput!
+  create: TeamInvitationCreateWithoutPlayerInput!
+}
+
+input TeamInvitationUpsertWithWhereUniqueWithoutTeamInput {
+  where: TeamInvitationWhereUniqueInput!
+  update: TeamInvitationUpdateWithoutTeamDataInput!
+  create: TeamInvitationCreateWithoutTeamInput!
+}
+
+input TeamInvitationWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  player: UserWhereInput
+  team: TeamWhereInput
+  AND: [TeamInvitationWhereInput!]
+  OR: [TeamInvitationWhereInput!]
+  NOT: [TeamInvitationWhereInput!]
+}
+
+input TeamInvitationWhereUniqueInput {
+  id: ID
 }
 
 enum TeamOrderByInput {
@@ -322,6 +527,7 @@ input TeamUpdateInput {
   owner: TeamOwnerUpdateOneRequiredWithoutTeamInput
   players: UserUpdateManyWithoutTeamInput
   points: Int
+  playerinvitations: TeamInvitationUpdateManyWithoutTeamInput
 }
 
 input TeamUpdateManyMutationInput {
@@ -335,6 +541,13 @@ input TeamUpdateOneRequiredWithoutOwnerInput {
   create: TeamCreateWithoutOwnerInput
   update: TeamUpdateWithoutOwnerDataInput
   upsert: TeamUpsertWithoutOwnerInput
+  connect: TeamWhereUniqueInput
+}
+
+input TeamUpdateOneRequiredWithoutPlayerinvitationsInput {
+  create: TeamCreateWithoutPlayerinvitationsInput
+  update: TeamUpdateWithoutPlayerinvitationsDataInput
+  upsert: TeamUpsertWithoutPlayerinvitationsInput
   connect: TeamWhereUniqueInput
 }
 
@@ -353,6 +566,16 @@ input TeamUpdateWithoutOwnerDataInput {
   teamcode: String
   players: UserUpdateManyWithoutTeamInput
   points: Int
+  playerinvitations: TeamInvitationUpdateManyWithoutTeamInput
+}
+
+input TeamUpdateWithoutPlayerinvitationsDataInput {
+  name: String
+  shortname: String
+  teamcode: String
+  owner: TeamOwnerUpdateOneRequiredWithoutTeamInput
+  players: UserUpdateManyWithoutTeamInput
+  points: Int
 }
 
 input TeamUpdateWithoutPlayersDataInput {
@@ -361,11 +584,17 @@ input TeamUpdateWithoutPlayersDataInput {
   teamcode: String
   owner: TeamOwnerUpdateOneRequiredWithoutTeamInput
   points: Int
+  playerinvitations: TeamInvitationUpdateManyWithoutTeamInput
 }
 
 input TeamUpsertWithoutOwnerInput {
   update: TeamUpdateWithoutOwnerDataInput!
   create: TeamCreateWithoutOwnerInput!
+}
+
+input TeamUpsertWithoutPlayerinvitationsInput {
+  update: TeamUpdateWithoutPlayerinvitationsDataInput!
+  create: TeamCreateWithoutPlayerinvitationsInput!
 }
 
 input TeamUpsertWithoutPlayersInput {
@@ -458,6 +687,9 @@ input TeamWhereInput {
   points_lte: Int
   points_gt: Int
   points_gte: Int
+  playerinvitations_every: TeamInvitationWhereInput
+  playerinvitations_some: TeamInvitationWhereInput
+  playerinvitations_none: TeamInvitationWhereInput
   AND: [TeamWhereInput!]
   OR: [TeamWhereInput!]
   NOT: [TeamWhereInput!]
@@ -478,6 +710,7 @@ type User {
   createdAt: DateTime!
   ownTeam: TeamOwner
   team: Team
+  invitation(where: TeamInvitationWhereInput, orderBy: TeamInvitationOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [TeamInvitation!]
 }
 
 type UserConnection {
@@ -494,6 +727,7 @@ input UserCreateInput {
   password: String!
   ownTeam: TeamOwnerCreateOneWithoutUserInput
   team: TeamCreateOneWithoutPlayersInput
+  invitation: TeamInvitationCreateManyWithoutPlayerInput
 }
 
 input UserCreateManyWithoutTeamInput {
@@ -501,9 +735,24 @@ input UserCreateManyWithoutTeamInput {
   connect: [UserWhereUniqueInput!]
 }
 
+input UserCreateOneWithoutInvitationInput {
+  create: UserCreateWithoutInvitationInput
+  connect: UserWhereUniqueInput
+}
+
 input UserCreateOneWithoutOwnTeamInput {
   create: UserCreateWithoutOwnTeamInput
   connect: UserWhereUniqueInput
+}
+
+input UserCreateWithoutInvitationInput {
+  id: ID
+  name: String!
+  email: String!
+  playercode: String
+  password: String!
+  ownTeam: TeamOwnerCreateOneWithoutUserInput
+  team: TeamCreateOneWithoutPlayersInput
 }
 
 input UserCreateWithoutOwnTeamInput {
@@ -513,6 +762,7 @@ input UserCreateWithoutOwnTeamInput {
   playercode: String
   password: String!
   team: TeamCreateOneWithoutPlayersInput
+  invitation: TeamInvitationCreateManyWithoutPlayerInput
 }
 
 input UserCreateWithoutTeamInput {
@@ -522,6 +772,7 @@ input UserCreateWithoutTeamInput {
   playercode: String
   password: String!
   ownTeam: TeamOwnerCreateOneWithoutUserInput
+  invitation: TeamInvitationCreateManyWithoutPlayerInput
 }
 
 type UserEdge {
@@ -673,6 +924,7 @@ input UserUpdateInput {
   password: String
   ownTeam: TeamOwnerUpdateOneWithoutUserInput
   team: TeamUpdateOneWithoutPlayersInput
+  invitation: TeamInvitationUpdateManyWithoutPlayerInput
 }
 
 input UserUpdateManyDataInput {
@@ -706,11 +958,27 @@ input UserUpdateManyWithWhereNestedInput {
   data: UserUpdateManyDataInput!
 }
 
+input UserUpdateOneRequiredWithoutInvitationInput {
+  create: UserCreateWithoutInvitationInput
+  update: UserUpdateWithoutInvitationDataInput
+  upsert: UserUpsertWithoutInvitationInput
+  connect: UserWhereUniqueInput
+}
+
 input UserUpdateOneRequiredWithoutOwnTeamInput {
   create: UserCreateWithoutOwnTeamInput
   update: UserUpdateWithoutOwnTeamDataInput
   upsert: UserUpsertWithoutOwnTeamInput
   connect: UserWhereUniqueInput
+}
+
+input UserUpdateWithoutInvitationDataInput {
+  name: String
+  email: String
+  playercode: String
+  password: String
+  ownTeam: TeamOwnerUpdateOneWithoutUserInput
+  team: TeamUpdateOneWithoutPlayersInput
 }
 
 input UserUpdateWithoutOwnTeamDataInput {
@@ -719,6 +987,7 @@ input UserUpdateWithoutOwnTeamDataInput {
   playercode: String
   password: String
   team: TeamUpdateOneWithoutPlayersInput
+  invitation: TeamInvitationUpdateManyWithoutPlayerInput
 }
 
 input UserUpdateWithoutTeamDataInput {
@@ -727,11 +996,17 @@ input UserUpdateWithoutTeamDataInput {
   playercode: String
   password: String
   ownTeam: TeamOwnerUpdateOneWithoutUserInput
+  invitation: TeamInvitationUpdateManyWithoutPlayerInput
 }
 
 input UserUpdateWithWhereUniqueWithoutTeamInput {
   where: UserWhereUniqueInput!
   data: UserUpdateWithoutTeamDataInput!
+}
+
+input UserUpsertWithoutInvitationInput {
+  update: UserUpdateWithoutInvitationDataInput!
+  create: UserCreateWithoutInvitationInput!
 }
 
 input UserUpsertWithoutOwnTeamInput {
@@ -834,6 +1109,9 @@ input UserWhereInput {
   createdAt_gte: DateTime
   ownTeam: TeamOwnerWhereInput
   team: TeamWhereInput
+  invitation_every: TeamInvitationWhereInput
+  invitation_some: TeamInvitationWhereInput
+  invitation_none: TeamInvitationWhereInput
   AND: [UserWhereInput!]
   OR: [UserWhereInput!]
   NOT: [UserWhereInput!]

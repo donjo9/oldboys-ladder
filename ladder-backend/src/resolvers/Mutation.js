@@ -14,7 +14,10 @@ const Mutation = {
         const user = await prisma.mutation.createUser({
             data: {
                 ...args.data,
-                playercode: generate("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz", 10),
+                playercode: generate(
+                    "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz",
+                    10
+                ),
                 password
             }
         });
@@ -80,7 +83,7 @@ const Mutation = {
         }
         const userHasTeam = await prisma.exists.Team({
             owner: {
-                id: userId
+                user: { id: userId }
             }
         });
 
@@ -91,7 +94,10 @@ const Mutation = {
             {
                 data: {
                     ...args.data,
-                    teamcode: generate("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz", 10),
+                    teamcode: generate(
+                        "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz",
+                        10
+                    ),
                     owner: {
                         create: {
                             user: {
@@ -110,6 +116,42 @@ const Mutation = {
             },
             info
         );
+    },
+    async createTeamInvitation(parent, args, { prisma, request }, info) {
+        const userId = getUserId(request);
+        if (!userId) {
+            throw new Error("Please login to create new team invitation");
+        }
+
+        const teamOwner = await prisma.exists.Team({
+            AND: [
+                {
+                    owner: {
+                        user: { id: userId }
+                    }
+                },
+                { id: args.data.teamid }
+            ]
+        });
+
+        if (!teamOwner) {
+            throw new Error("Only team owner can invite player");
+        }
+
+        return prisma.mutation.createTeamInvitation({
+            data: {
+                player: {
+                    connect: {
+                        playercode: args.data.playercode
+                    }
+                },
+                team: {
+                    connect: {
+                        id: args.data.teamid
+                    }
+                }
+            }
+        }, info);
     }
 };
 
