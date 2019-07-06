@@ -15,7 +15,7 @@ const mutation = graphql`
         }
     }
 `;
-let id = 0;
+
 export default (name, shortname, callback, onerror) => {
     const variables = {
         createTeamInput: {

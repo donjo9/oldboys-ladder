@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import graphql from "babel-plugin-relay/macro";
 import { QueryRenderer } from "react-relay";
-import TeamListItem, { TeamListRow } from "./TeamListItem";
+import TeamListItem from "./TeamListItem";
 import environment from "../Environment";
 
 const TeamListContainer = styled.div`
