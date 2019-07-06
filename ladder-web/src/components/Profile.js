@@ -6,6 +6,7 @@ import environment from "../Environment";
 import { LoginContext } from "./context";
 import Team from "./Team";
 
+
 const Profile = props => {
     const { state } = useContext(LoginContext);
     return (
@@ -19,6 +20,7 @@ const Profile = props => {
                                 id
                                 name
                                 email
+                                playercode
                                 ...Team_team
                             }
                         }
@@ -37,6 +39,7 @@ const Profile = props => {
                             <div>
                                 <div>{props.me.name}</div>
                                 <div>{props.me.email}</div>
+                                <div>Spiller kode: {props.me.playercode}</div>
                                 <Team team={me} />
                             </div>
                         );

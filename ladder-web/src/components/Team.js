@@ -1,8 +1,15 @@
 import React from "react";
 import graphql from "babel-plugin-relay/macro";
 import { createFragmentContainer } from "react-relay";
-
+import { Link } from "react-router-dom";
+import styled from "styled-components";
 import CreateTeam from "./CreateTeam";
+import Crown from "./crown.js";
+
+const TeamLink = styled(Link)`
+    color: white;
+    text-decoration: none;
+`
 
 const Team = props => {
     const {
@@ -11,10 +18,10 @@ const Team = props => {
 
     return (
         <React.Fragment>
-            {ownTeam ? (
-                <div>Eget hold: {ownTeam.team.name}</div>
-            ) : team ? (
-                <div>Du er på holdet: {team.name}</div>
+            {team ? (
+                <TeamLink to={`/team/${team.teamcode}`}>
+                    Hold: {team.name} {ownTeam.team && <Crown />}
+                </TeamLink>
             ) : (
                 <React.Fragment>
                     <div>Du er ikke på noget hold</div>
@@ -30,6 +37,7 @@ export default createFragmentContainer(Team, {
         fragment Team_team on User {
             team {
                 name
+                teamcode
             }
             ownTeam {
                 team {

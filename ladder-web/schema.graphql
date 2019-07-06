@@ -1,5 +1,5 @@
 # source: http://localhost:4000
-# timestamp: Sat Jul 06 2019 14:18:14 GMT+0200 (GMT+02:00)
+# timestamp: Sat Jul 06 2019 22:55:34 GMT+0200 (GMT+02:00)
 
 type AuthPayload {
   token: String!
@@ -67,12 +67,14 @@ input UpdateUserInput {
   name: String
   email: String
   password: String
+  playercode: String
 }
 
 type User {
   id: ID!
   name: String!
   email: String
+  playercode: String
   team: Team
   ownTeam: TeamOwner
   updatedAt: String!
@@ -86,6 +88,8 @@ enum UserOrderByInput {
   name_DESC
   email_ASC
   email_DESC
+  playercode_ASC
+  playercode_DESC
   password_ASC
   password_DESC
   updatedAt_ASC
