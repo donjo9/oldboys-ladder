@@ -2,6 +2,7 @@ import bcrypt from "bcryptjs";
 import getUserId from "../utils/getUserId";
 import generateToken from "../utils/generateToken";
 import hashPassword from "../utils/hashPassword";
+import generate from "nanoid/generate";
 
 const Mutation = {
     async createUser(parent, args, { prisma }, info) {
@@ -89,6 +90,7 @@ const Mutation = {
             {
                 data: {
                     ...args.data,
+                    teamcode: generate("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz", 10),
                     owner: {
                         create: {
                             user: {

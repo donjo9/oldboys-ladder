@@ -78,6 +78,7 @@ type Team {
   id: ID!
   name: String!
   shortname: String!
+  teamcode: String!
   updatedAt: DateTime!
   createdAt: DateTime!
   owner: TeamOwner!
@@ -95,6 +96,7 @@ input TeamCreateInput {
   id: ID
   name: String!
   shortname: String!
+  teamcode: String!
   owner: TeamOwnerCreateOneWithoutTeamInput!
   players: UserCreateManyWithoutTeamInput
   points: Int
@@ -114,6 +116,7 @@ input TeamCreateWithoutOwnerInput {
   id: ID
   name: String!
   shortname: String!
+  teamcode: String!
   players: UserCreateManyWithoutTeamInput
   points: Int
 }
@@ -122,6 +125,7 @@ input TeamCreateWithoutPlayersInput {
   id: ID
   name: String!
   shortname: String!
+  teamcode: String!
   owner: TeamOwnerCreateOneWithoutTeamInput!
   points: Int
 }
@@ -138,6 +142,8 @@ enum TeamOrderByInput {
   name_DESC
   shortname_ASC
   shortname_DESC
+  teamcode_ASC
+  teamcode_DESC
   updatedAt_ASC
   updatedAt_DESC
   createdAt_ASC
@@ -285,6 +291,7 @@ type TeamPreviousValues {
   id: ID!
   name: String!
   shortname: String!
+  teamcode: String!
   updatedAt: DateTime!
   createdAt: DateTime!
   points: Int!
@@ -311,6 +318,7 @@ input TeamSubscriptionWhereInput {
 input TeamUpdateInput {
   name: String
   shortname: String
+  teamcode: String
   owner: TeamOwnerUpdateOneRequiredWithoutTeamInput
   players: UserUpdateManyWithoutTeamInput
   points: Int
@@ -319,6 +327,7 @@ input TeamUpdateInput {
 input TeamUpdateManyMutationInput {
   name: String
   shortname: String
+  teamcode: String
   points: Int
 }
 
@@ -341,6 +350,7 @@ input TeamUpdateOneWithoutPlayersInput {
 input TeamUpdateWithoutOwnerDataInput {
   name: String
   shortname: String
+  teamcode: String
   players: UserUpdateManyWithoutTeamInput
   points: Int
 }
@@ -348,6 +358,7 @@ input TeamUpdateWithoutOwnerDataInput {
 input TeamUpdateWithoutPlayersDataInput {
   name: String
   shortname: String
+  teamcode: String
   owner: TeamOwnerUpdateOneRequiredWithoutTeamInput
   points: Int
 }
@@ -405,6 +416,20 @@ input TeamWhereInput {
   shortname_not_starts_with: String
   shortname_ends_with: String
   shortname_not_ends_with: String
+  teamcode: String
+  teamcode_not: String
+  teamcode_in: [String!]
+  teamcode_not_in: [String!]
+  teamcode_lt: String
+  teamcode_lte: String
+  teamcode_gt: String
+  teamcode_gte: String
+  teamcode_contains: String
+  teamcode_not_contains: String
+  teamcode_starts_with: String
+  teamcode_not_starts_with: String
+  teamcode_ends_with: String
+  teamcode_not_ends_with: String
   updatedAt: DateTime
   updatedAt_not: DateTime
   updatedAt_in: [DateTime!]
@@ -440,6 +465,7 @@ input TeamWhereInput {
 
 input TeamWhereUniqueInput {
   id: ID
+  teamcode: String
 }
 
 type User {

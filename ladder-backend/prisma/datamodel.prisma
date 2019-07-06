@@ -21,6 +21,7 @@ type Team {
     id: ID! @id
     name: String!
     shortname: String!
+    teamcode: String! @unique
     updatedAt: DateTime! @updatedAt
     createdAt: DateTime! @createdAt
     owner: TeamOwner! @relation(name: "TeamOwnerToTeam", onDelete: CASCADE)

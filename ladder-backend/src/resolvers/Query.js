@@ -22,9 +22,9 @@ const Query = {
     },
     team(parent, args, { prisma }, info) {
         const opArgs = {};
-        if (args.id) {
+        if (args.teamcode) {
             opArgs.where = {
-                id: args.id
+                teamcode: args.teamcode
             };
         }
         return prisma.query.team(opArgs, info);

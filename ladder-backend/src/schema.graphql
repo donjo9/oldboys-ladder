@@ -2,7 +2,7 @@
 
 type Query {
     teams: [Team!]!
-    team(id: String): Team
+    team(teamcode: String): Team
     users(
         query: String
         first: Int
@@ -70,6 +70,7 @@ type Team {
     id: ID!
     name: String!
     shortname: String!
+    teamcode: String
     updatedAt: DateTime!
     createdAt: DateTime!
     owner: TeamOwner!
