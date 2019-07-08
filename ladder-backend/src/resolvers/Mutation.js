@@ -174,7 +174,6 @@ const Mutation = {
         if (!invitation) {
             throw new Error("No invitation found");
         }
-        console.log(invitation);
 
         if (invitation.player.id !== userId) {
             throw new Error("Not your invitation!");

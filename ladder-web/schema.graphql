@@ -1,5 +1,5 @@
 # source: http://localhost:4000
-# timestamp: Sun Jul 07 2019 00:13:08 GMT+0200 (GMT+02:00)
+# timestamp: Mon Jul 08 2019 11:54:51 GMT+0200 (GMT+02:00)
 
 type AuthPayload {
   token: String!
@@ -32,6 +32,7 @@ input LoginUserInput {
 type Mutation {
   createUser(data: CreateUserInput!): AuthPayload!
   createTeam(data: CreateTeamInput!): Team!
+  acceptTeamInvitation(invitation: String): Team!
   createTeamInvitation(data: CreateTeamInviteInput!): TeamInvitation!
   deleteUser: User!
   updateUser(data: UpdateUserInput!): User!
