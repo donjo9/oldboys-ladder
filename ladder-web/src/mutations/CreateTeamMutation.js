@@ -11,6 +11,9 @@ const mutation = graphql`
             teamcode
             owner {
                 id
+                user {
+                    id
+                }
                 team {
                     id
                     name
@@ -38,9 +41,11 @@ export default (name, shortname, callback, onerror) => {
         },
         onError: error => onerror(error),
         updater: store => {
-            const user = store.get("cjxgdb25h00090704njtr3zoj");
             const teamreturn = store.getRootField("createTeam");
             const teamownerreturn = teamreturn.getLinkedRecord("owner");
+            const user = store.get(
+                teamownerreturn.getLinkedRecord("user").getValue("id")
+            );
 
             const team = store.get(teamreturn.getValue("id"));
             const teamowner = store.get(teamownerreturn.getValue("id"));
