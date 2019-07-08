@@ -1,24 +1,35 @@
-import React from "react";
+import React, { useContext } from "react";
 
 import graphql from "babel-plugin-relay/macro";
 import { QueryRenderer } from "react-relay";
 import environment from "../Environment";
+import { LoginContext } from "./context";
+import TeamInvitationForm from "./TeamInvitationForm";
 
 const TeamProfile = props => {
     const {
         match: { params }
     } = props;
 
+    const {
+        state: { id }
+    } = useContext(LoginContext);
     return (
         <QueryRenderer
             environment={environment}
             query={graphql`
                 query TeamProfileQuery($teamcode: String!) {
                     team(teamcode: $teamcode) {
+                        id
                         name
                         players {
                             id
                             name
+                        }
+                        owner {
+                            user {
+                                id
+                            }
                         }
                     }
                 }
@@ -42,6 +53,9 @@ const TeamProfile = props => {
                                         <div key={player.id}>{player.name}</div>
                                     );
                                 })}
+                                {id === team.owner.user.id ? (
+                                    <TeamInvitationForm teamid={team.id} />
+                                ) : null}
                             </React.Fragment>
                         ) : (
                             <div>No team found</div>
