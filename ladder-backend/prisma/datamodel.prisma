@@ -39,12 +39,6 @@ type Team {
         @relation(name: "TeamToTeamInvitation", onDelete: CASCADE)
 }
 
-enum TeamRole {
-    OWNER
-    ADMIN
-    PLAYER
-}
-
 type TeamInvitation {
     id: ID! @id
     player: User! @relation(name: "PlayerToTeamInvitation", onDelete: SET_NULL)
