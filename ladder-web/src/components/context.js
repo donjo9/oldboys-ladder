@@ -1,23 +1,28 @@
 import React from "react";
-import { AUTHTOKEN } from "../constants";
+import { AUTHTOKEN, USERID } from "../constants";
 
 export const LoginContext = React.createContext();
 
 let initialState = {
-    token: localStorage.getItem(AUTHTOKEN)
+    token: localStorage.getItem(AUTHTOKEN),
+    id: localStorage.getItem(USERID)
 };
 
 function reducer(state, action) {
-    let { token } = state;
+    let { token, id } = state;
     switch (action.type) {
         case "SAVE_TOKEN":
-            token = action.payload;
+            token = action.payload.token;
+            id = action.payload.id;
             localStorage.setItem(AUTHTOKEN, token);
-            return { token };
+            localStorage.setItem(USERID, id);
+            return { token, id };
         case "LOGOUT":
                 token = null;
+                id = null;
                 localStorage.removeItem(AUTHTOKEN);
-            return { token };
+                localStorage.removeItem(USERID);
+            return { token, id };
         default:
             return state;
     }

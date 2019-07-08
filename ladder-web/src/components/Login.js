@@ -23,7 +23,7 @@ const Login = props => {
                         (id, token) => {
                             tokenContext.dispatch({
                                 type: "SAVE_TOKEN",
-                                payload: token
+                                payload: {token, id}
                             });
                             dismiss();
                             history.push("/ladder");
