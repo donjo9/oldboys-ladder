@@ -23,13 +23,20 @@ const TeamInvitationForm = props => {
                 }}
             >
                 {({ isSubmitting }) => (
-                    <LoginSignUpContainer style={{ flexDirection: "row" }}>
-                        <StyledField type="text" name="playercode" />
-                        <ErrorMessage name="playercode" component="div" />
-                        <Button type="submit" disabled={isSubmitting}>
-                            Submit
-                        </Button>
-                    </LoginSignUpContainer>
+                    <React.Fragment>
+                        <div>Inviter spiller:</div>
+                        <LoginSignUpContainer style={{ flexDirection: "row" }}>
+                            <StyledField
+                                type="text"
+                                name="playercode"
+                                placeholder="Spiller kode"
+                            />
+                            <ErrorMessage name="playercode" component="div" />
+                            <Button type="submit" disabled={isSubmitting}>
+                                Submit
+                            </Button>
+                        </LoginSignUpContainer>
+                    </React.Fragment>
                 )}
             </Formik>
         </React.Fragment>
