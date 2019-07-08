@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import graphql from "babel-plugin-relay/macro";
 import { createFragmentContainer } from "react-relay";
 import { Link } from "react-router-dom";
@@ -15,7 +15,7 @@ const Team = props => {
     const {
         team: { team, ownTeam }
     } = props;
-
+    const [showCreateTeam, setShowCreateTeam] = useState(false);
     return (
         <React.Fragment>
             {team ? (
@@ -25,7 +25,11 @@ const Team = props => {
             ) : (
                 <React.Fragment>
                     <div>Du er ikke på noget hold</div>
-                    <CreateTeam />
+                    <CreateTeam
+                        visable={showCreateTeam}
+                        show={() => setShowCreateTeam(true)}
+                        dismiss={() => setShowCreateTeam(false)}
+                    />
                 </React.Fragment>
             )}
         </React.Fragment>

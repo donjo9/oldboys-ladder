@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import CreateTeamMutation from "../mutations/CreateTeamMutation";
 import { Button } from "./Button";
 
@@ -8,14 +8,11 @@ import { LoginSignUpContainer, Error, StyledField } from "./LoginSignupCommon";
 import Modal from "./Modal";
 
 const CreateTeam = props => {
-    const [showCreateTeam, setShowCreateTeam] = useState(false);
+    const { visable, show, dismiss } = props;
     return (
         <React.Fragment>
-            <Button onClick={() => setShowCreateTeam(true)}>Opret hold</Button>
-            <Modal
-                visable={showCreateTeam}
-                dismiss={() => setShowCreateTeam(false)}
-            >
+            <Button onClick={show}>Opret hold</Button>
+            <Modal visable={visable} dismiss={dismiss}>
                 <Formik
                     initialValues={{ name: "", shortname: "" }}
                     onSubmit={(values, actions) => {
@@ -23,12 +20,9 @@ const CreateTeam = props => {
                             values.name,
                             values.shortname,
                             (name, shortname) => {
-                                setShowCreateTeam(false);
+                                dismiss();
                             },
                             err => {
-                                /*actions.setStatus({
-                                    msg: err.source.errors[0].message
-                                });*/
                                 console.log(JSON.stringify(err, null, 4));
                                 actions.setSubmitting(false);
                             }
@@ -47,7 +41,7 @@ const CreateTeam = props => {
                             onSubmit={handleSubmit}
                             onKeyDown={e => {
                                 if (e.key === "Escape") {
-                                    setShowCreateTeam(false);
+                                    dismiss();
                                 }
                             }}
                         >
