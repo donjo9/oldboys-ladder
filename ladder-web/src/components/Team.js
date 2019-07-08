@@ -20,7 +20,7 @@ const Team = props => {
         <React.Fragment>
             {team ? (
                 <TeamLink to={`/team/${team.teamcode}`}>
-                    Hold: {team.name} {ownTeam.team && <Crown />}
+                    Hold: {team.name} {ownTeam && <Crown />}
                 </TeamLink>
             ) : (
                 <React.Fragment>

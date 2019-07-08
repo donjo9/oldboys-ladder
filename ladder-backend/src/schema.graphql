@@ -16,6 +16,7 @@ type Query {
 type Mutation {
     createUser(data: CreateUserInput!): AuthPayload!
     createTeam(data: CreateTeamInput!): Team!
+    acceptTeamInvitation(invitation: String): Team!
     createTeamInvitation(data: CreateTeamInviteInput!): TeamInvitation!
     deleteUser: User!
     updateUser(data: UpdateUserInput!): User!

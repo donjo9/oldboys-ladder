@@ -138,20 +138,68 @@ const Mutation = {
             throw new Error("Only team owner can invite player");
         }
 
-        return prisma.mutation.createTeamInvitation({
-            data: {
-                player: {
-                    connect: {
-                        playercode: args.data.playercode
-                    }
-                },
-                team: {
-                    connect: {
-                        id: args.data.teamid
+        return prisma.mutation.createTeamInvitation(
+            {
+                data: {
+                    player: {
+                        connect: {
+                            playercode: args.data.playercode
+                        }
+                    },
+                    team: {
+                        connect: {
+                            id: args.data.teamid
+                        }
                     }
                 }
-            }
-        }, info);
+            },
+            info
+        );
+    },
+    async acceptTeamInvitation(parent, args, { prisma, request }, info) {
+        const userId = getUserId(request);
+        if (!userId) {
+            throw new Error("Please login to accept team invitation");
+        }
+
+        const invitation = await prisma.query.teamInvitation(
+            {
+                where: {
+                    id: args.invitation
+                }
+            },
+            "{player { id } team { id}}"
+        );
+
+        if (!invitation) {
+            throw new Error("No invitation found");
+        }
+        console.log(invitation);
+
+        if (invitation.player.id !== userId) {
+            throw new Error("Not your invitation!");
+        }
+
+        return prisma.mutation.updateTeam(
+            {
+                where: {
+                    id: invitation.team.id
+                },
+                data: {
+                    players: {
+                        connect: {
+                            id: invitation.player.id
+                        }
+                    },
+                    playerinvitations: {
+                        delete: {
+                            id: args.invitation
+                        }
+                    }
+                }
+            },
+            info
+        );
     }
 };
 
