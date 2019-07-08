@@ -27,13 +27,14 @@ const TeamInvitationForm = props => {
                         <div>Inviter spiller:</div>
                         <LoginSignUpContainer style={{ flexDirection: "row" }}>
                             <StyledField
+                                style={{ width: "60%" }}
                                 type="text"
                                 name="playercode"
                                 placeholder="Spiller kode"
                             />
                             <ErrorMessage name="playercode" component="div" />
                             <Button type="submit" disabled={isSubmitting}>
-                                Submit
+                                Send
                             </Button>
                         </LoginSignUpContainer>
                     </React.Fragment>
