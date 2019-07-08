@@ -29,13 +29,13 @@ const HeadLine = styled.h1`
         text-decoration: none;
     }
 `;
-
+/*
 const NavBar = styled.nav`
     display: flex;
     align-items: center;
     text-transform: uppercase;
-`;
-
+`;*/
+/*
 const NavLink = styled(Link)`
     margin: 15px;
     text-decoration: none;
@@ -46,7 +46,7 @@ const NavLink = styled(Link)`
         border-bottom: 1px solid var(--common-highlight);
         transition: border-bottom 250ms ease-in;
     }
-`;
+`;*/
 
 const ProfileContainer = styled.div`
     display: flex;
@@ -70,9 +70,9 @@ const Header = props => {
                 <Link to="/">OBL</Link>
             </HeadLine>
 
-            <NavBar>
+            {/*<NavBar>
                 <NavLink to="/ladder">Ladder</NavLink>
-            </NavBar>
+            </NavBar>*/}
             <ProfileContainer>
                 {state.token ? (
                     <React.Fragment>

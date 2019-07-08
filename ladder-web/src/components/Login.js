@@ -26,7 +26,7 @@ const Login = props => {
                                 payload: {token, id}
                             });
                             dismiss();
-                            history.push("/ladder");
+                            history.push("/");
                         },
                         err => {
                             actions.setStatus({

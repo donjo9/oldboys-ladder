@@ -27,7 +27,7 @@ const SignUp = props => {
                         payload: token
                     });
                     localStorage.setItem(USERID, id);
-                    props.history.push("/ladder");
+                    props.history.push("/");
                 },
                 err => {
                     setError(err.source.errors[0].message);

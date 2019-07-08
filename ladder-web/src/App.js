@@ -2,7 +2,7 @@ import React from "react";
 
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import styled from "styled-components";
-import Main from "./components/Main";
+//import Main from "./components/Main";
 import Ladder from "./components/Ladder";
 import Profile from "./components/Profile";
 import Header from "./components/Header";
@@ -26,8 +26,8 @@ function App() {
                     <Header />
                     <ContentContainer>
                         <Switch>
-                            <Route path="/" exact component={Main} />
-                            <Route path="/ladder" exact component={Ladder} />
+                            <Route path="/" exact component={Ladder} />
+                            {/*<Route path="/ladder" exact component={Ladder} />*/}
                             <Route path="/profile" exact component={Profile} />
                             <Route
                                 path="/team/:id"
